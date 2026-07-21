@@ -1,849 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<!--
+  ============================================================
+  NEWSTAR-INSPIRED BLOGGER TEMPLATE
+  ============================================================
+  Como usar:
+  1. Suba os 3 arquivos (theme.css, theme.js, template.xml) para
+     um repositório PÚBLICO no GitHub, por exemplo:
+        github.com/SEU-USUARIO/newstar-blogger
+  2. Os arquivos serão servidos automaticamente pelo jsDelivr em:
+        https://cdn.jsdelivr.net/gh/SEU-USUARIO/newstar-blogger@main/theme.css
+        https://cdn.jsdelivr.net/gh/SEU-USUARIO/newstar-blogger@main/theme.js
+  3. Edite as duas URLs abaixo (linhas marcadas com >>> EDITAR <<<)
+     substituindo SEU-USUARIO/newstar-blogger pelo caminho do seu repo.
+  4. No Blogger: Tema → seta ao lado de "PERSONALIZAR" → Restaurar
+     → envie este arquivo template.xml.
+  5. Pronto: header sticky + mega menu + hero slider + grid de posts
+     + páginas de categoria (por label) + post individual estilo review
+     + footer — tudo puxando automaticamente dos posts/páginas/labels
+     que você já tem no Blogger.
+  ============================================================
+-->
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.0.0' expr:class='data:blog.languageDirection' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Callango Nerd | Cultura Pop, Games, Cinema & Anime</title>
-<meta name="description" content="Portal de cultura pop: notícias, críticas, rankings de filmes, séries, games e animes com sincronização em nuvem." />
-<meta property="og:title" content="Callango Nerd | Cultura Pop" />
-<meta property="og:description" content="Portal de entretenimento e cultura pop." />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary_large_image" />
-<link rel="icon" href="https://www.callangonerd.com/favicon.ico" type="image/x-icon" />
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+  <meta expr:content='&quot;text/html; charset=&quot; + data:blog.encoding' http-equiv='Content-Type'/>
+  <meta content='#0e0e10' name='theme-color'/>
+  <link expr:href='data:view.url.canonical' rel='canonical'/>
+  <link href='https://www.callangonerd.com/favicon.ico' rel='icon' type='image/x-icon'/>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <b:include data='blog' name='all-head-content'/>
+  <title><data:view.title.escaped/></title>
 
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          bg:       '#0b0a0f',
-          bg2:      '#0f0e14',
-          surface:  '#151319',
-          surface2: '#1c1922',
-          line:     '#2b2732',
-          brand:    '#ff2d4d',
-          brandDk:  '#c01033',
-          accent:   '#ffb703',
-          muted:    '#9b96a3',
-          text:     '#f5f2f6',
-        },
-        fontFamily: {
-          display: ['Anton', 'Impact', 'sans-serif'],
-          serif:   ['Fraunces', 'Georgia', 'serif'],
-          body:    ['Inter', 'system-ui', 'sans-serif'],
-        },
-      }
-    }
-  }
-</script>
+  <!-- Font Awesome (ícones sociais) -->
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css' rel='stylesheet'/>
 
-<style>
-  html, body { background:#0b0a0f; color:#f5f2f6; font-family:'Inter',sans-serif; }
-  h1,h2,h3,h4,.font-display { font-family:'Anton',Impact,sans-serif; letter-spacing:.01em; font-weight:400; }
+  <!-- >>> EDITAR <<< : troque SEU-USUARIO/newstar-blogger pelo seu repo do GitHub -->
+  <link href='https://cdn.jsdelivr.net/gh/SEU-USUARIO/newstar-blogger@main/public/blogger/theme.css' rel='stylesheet' type='text/css'/>
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
-  }
-
-  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
-    outline:2px solid #ff2d4d; outline-offset:2px; border-radius:2px;
-  }
-
-  ::-webkit-scrollbar { width:10px; height:8px; }
-  ::-webkit-scrollbar-track { background:#0b0a0f; }
-  ::-webkit-scrollbar-thumb { background:#2b2732; border-radius:6px; }
-  ::-webkit-scrollbar-thumb:hover { background:#ff2d4d; }
-
-  .scroll-hide { -ms-overflow-style:none; scrollbar-width:none; }
-  .scroll-hide::-webkit-scrollbar { display:none; }
-
-  /* ============ EYEBROW / KICKER ============ */
-  .eyebrow {
-    display:inline-flex; align-items:center; gap:.45rem;
-    font-family:'Fraunces',serif; font-style:italic; font-weight:600;
-    font-size:.74rem; letter-spacing:.01em; color:#ffb703;
-  }
-  .eyebrow::before { content:''; width:16px; height:1px; background:#ffb703; display:inline-block; flex:none; }
-  .eyebrow.on-image { color:#ffd873; }
-  .eyebrow.on-image::before { background:#ffd873; }
-
-  /* ============ MASTHEAD ============ */
-  .masthead-title { font-family:'Anton',Impact,sans-serif; letter-spacing:.01em; }
-
-  /* ============ NAV ============ */
-  .nav-link { position:relative; padding:.4rem .1rem; color:#c9c4d1; font-weight:600; font-size:.85rem; white-space:nowrap; transition:color .18s; }
-  .nav-link::after { content:''; position:absolute; left:0; right:0; bottom:-2px; height:2px; background:#ff2d4d; transform:scaleX(0); transform-origin:left; transition:transform .25s ease; }
-  .nav-link:hover { color:#fff; }
-  .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
-  .nav-link.active { color:#fff; }
-
-  .mobile-link { display:flex; align-items:center; gap:.75rem; padding:.65rem .25rem; color:#e6e2ea; font-weight:600; font-size:.95rem; border-bottom:1px solid #1c1922; }
-  .mobile-link i { color:#ff2d4d; width:18px; }
-
-  .search-input { background:#151319; border:1px solid #2b2732; color:#fff; padding:.5rem .9rem .5rem 2.1rem; border-radius:.35rem; font-size:.85rem; width:100%; transition:border-color .2s; }
-  .search-input:focus { outline:none; border-color:#ff2d4d; }
-
-  .btn-brand { background:#ff2d4d; color:#fff; padding:.5rem 1.1rem; border-radius:.35rem; font-weight:700; font-size:.82rem; letter-spacing:.02em; transition:background .2s; }
-  .btn-brand:hover { background:#c01033; }
-
-  /* ============ HERO FEATURE ============ */
-  #heroFeature { position:relative; border-radius:.5rem; overflow:hidden; aspect-ratio:16/11; cursor:pointer; background:#151319; }
-  #heroFeature img { width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-  #heroFeature:hover img { transform:scale(1.035); }
-  #heroFeature .grad { position:absolute; inset:0; background:linear-gradient(180deg, transparent 30%, rgba(11,10,15,.55) 60%, rgba(11,10,15,.96) 100%); }
-  #heroFeature .content { position:absolute; left:0; right:0; bottom:0; padding:1.5rem 1.5rem 1.75rem; }
-  #heroFeature h1 { color:#fff; font-size:1.9rem; line-height:1.05; margin-top:.5rem; }
-  @media (min-width:768px){ #heroFeature h1 { font-size:2.9rem; } }
-
-  .radar-item { display:flex; gap:1rem; padding:1.1rem 0; border-bottom:1px solid #1c1922; cursor:pointer; }
-  .radar-item:first-child { padding-top:0; }
-  .radar-item:last-child { border-bottom:none; }
-  .radar-num { font-family:'Fraunces',serif; font-style:italic; font-weight:600; font-size:1.6rem; color:rgba(255,45,77,.55); width:2rem; flex:none; line-height:1; }
-  .radar-item h4 { font-family:'Anton'; font-size:1rem; line-height:1.2; color:#fff; margin-top:.3rem; transition:color .2s; }
-  .radar-item:hover h4 { color:#ff2d4d; }
-
-  /* ============ STANDARD CARD ============ */
-  .card { cursor:pointer; }
-  .card .thumb { position:relative; overflow:hidden; border-radius:.4rem; aspect-ratio:4/3; background:#151319; }
-  .card .thumb img { width:100%; height:100%; object-fit:cover; transition:transform .55s ease; }
-  .card:hover .thumb img { transform:scale(1.05); }
-  .card h3 { color:#fff; font-size:1.02rem; line-height:1.18; margin-top:.6rem; transition:color .2s; }
-  .card:hover h3 { color:#ff2d4d; }
-  .card .meta { font-family:'Fraunces',serif; font-style:italic; color:#9b96a3; font-size:.76rem; margin-top:.3rem; }
-
-  /* Mosaico assimétrico */
-  #destaquesGrid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.35rem; }
-  @media (min-width:768px){
-    #destaquesGrid { grid-template-columns:repeat(6,1fr); }
-    #destaquesGrid > *:nth-child(1) { grid-column:span 3; grid-row:span 2; }
-    #destaquesGrid > *:nth-child(1) .thumb { aspect-ratio:4/5; }
-    #destaquesGrid > *:nth-child(1) h3 { font-size:1.35rem; }
-    #destaquesGrid > *:nth-child(2) { grid-column:span 3; }
-    #destaquesGrid > *:nth-child(n+3) { grid-column:span 2; }
-  }
-
-  /* ============ TICKET (selo de nota, no lugar do hexágono) ============ */
-  .ticket { display:inline-flex; align-items:stretch; border-radius:.4rem; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,.4); flex:none; }
-  .ticket .score { background:linear-gradient(160deg,#ff2d4d,#c01033); color:#fff; font-family:'Fraunces',serif; font-style:italic; font-weight:700; font-size:1.3rem; padding:.3rem .65rem; display:flex; align-items:center; justify-content:center; min-width:2.6rem; }
-  .ticket .seam { width:0; border-left:2px dashed rgba(255,255,255,.35); }
-  .ticket .label { background:#0f0e14; color:#9b96a3; font-size:.55rem; letter-spacing:.16em; text-transform:uppercase; writing-mode:vertical-rl; padding:.3rem .3rem; display:flex; align-items:center; justify-content:center; font-weight:700; }
-
-  /* ============ TABS (sublinhado editorial) ============ */
-  .tab { padding:.5rem 0; margin-right:1.4rem; color:#9b96a3; font-weight:600; font-size:.86rem; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; white-space:nowrap; }
-  .tab:hover { color:#fff; }
-  .tab.active { color:#fff; border-color:#ff2d4d; }
-
-  /* ============ SECTION TITLE ============ */
-  .sec-title { display:flex; align-items:baseline; gap:.9rem; margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:1px solid #1c1922; }
-  .sec-title h2 { font-size:1.6rem; color:#fff; }
-  .sec-title .ver { margin-left:auto; font-family:'Fraunces',serif; font-style:italic; color:#9b96a3; font-size:.85rem; cursor:pointer; transition:color .2s; white-space:nowrap; }
-  .sec-title .ver:hover { color:#ff2d4d; }
-
-  /* ============ TOP 10 (numeral serifado enorme) ============ */
-  .h-scroll { display:flex; gap:1.5rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.5rem .25rem 1rem; }
-  .h-scroll > * { scroll-snap-align:start; flex:0 0 auto; }
-  .rank-item { position:relative; width:190px; cursor:pointer; }
-  .rank-num { position:absolute; left:-6px; bottom:-20px; font-family:'Fraunces',serif; font-style:italic; font-weight:700; font-size:7.5rem; line-height:.8; color:transparent; -webkit-text-stroke:1.5px #2b2732; z-index:0; pointer-events:none; user-select:none; }
-  .rank-poster { position:relative; z-index:1; margin-left:32%; aspect-ratio:2/3; border-radius:.35rem; overflow:hidden; box-shadow:0 10px 26px rgba(0,0,0,.5); background:#151319; }
-  .rank-poster img { width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
-  .rank-item:hover .rank-poster img { transform:scale(1.06); }
-  .rank-poster .bookmark { position:absolute; top:8px; left:8px; color:#fff; font-size:.85rem; text-shadow:0 1px 4px rgba(0,0,0,.6); }
-
-  /* ============ MAIS LIDAS (faixa horizontal) ============ */
-  #popularList { display:flex; gap:1.4rem; overflow-x:auto; padding-bottom:.5rem; }
-  .pop-item { flex:0 0 210px; cursor:pointer; }
-  .pop-item .thumb { position:relative; border-radius:.4rem; overflow:hidden; aspect-ratio:16/10; background:#151319; }
-  .pop-item .thumb img { width:100%; height:100%; object-fit:cover; }
-  .pop-num { position:absolute; top:-.5rem; left:-.5rem; font-family:'Fraunces',serif; font-style:italic; font-weight:700; font-size:1.9rem; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.9); z-index:2; }
-  .pop-item h4 { font-family:'Anton'; font-size:.92rem; color:#fff; line-height:1.2; margin-top:.55rem; transition:color .2s; }
-  .pop-item:hover h4 { color:#ff2d4d; }
-
-  /* ============ MODAL ============ */
-  .modal-open { overflow:hidden; }
-  #modal { background:rgba(6,5,9,.9); backdrop-filter:blur(6px); }
-  .modal-card { background:#0f0e14; border:1px solid #2b2732; border-radius:.6rem; }
-
-  /* ============ SYNC ============ */
-  .sync-dot { width:7px; height:7px; border-radius:999px; background:#22c55e; display:inline-block; box-shadow:0 0 0 0 rgba(34,197,94,.6); animation:pulse 2s infinite; }
-  .sync-dot.off { background:#ef4444; animation:none; }
-  @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(34,197,94,.6);} 70%{ box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{ box-shadow:0 0 0 0 rgba(34,197,94,0);} }
-
-  /* ============ REACTIONS ============ */
-  .react-btn { background:#1c1922; border:1px solid #2b2732; padding:.5rem .9rem; border-radius:.35rem; cursor:pointer; transition:all .2s; font-size:.9rem; color:#c9c4d1; }
-  .react-btn:hover { background:#26212d; transform:translateY(-2px); }
-  .react-btn.active { background:#ff2d4d; color:#fff; border-color:#ff2d4d; }
-
-  /* ============ SKELETON ============ */
-  .skel { background:linear-gradient(90deg,#151319,#1c1922,#151319); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:.4rem; }
-  @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
-</style>
+  <b:skin version='1.3.0'><![CDATA[
+  /* Skin vazio — todo o CSS está no arquivo externo (theme.css) hospedado no GitHub/jsDelivr */
+  body { background: #0e0e10; color: #ececec; }
+  ]]></b:skin>
 </head>
-<body class="min-h-screen">
 
-<!-- UTILITY BAR -->
-<div class="border-b border-line">
-  <div class="max-w-[1280px] mx-auto flex items-center justify-between px-4 py-2 text-xs text-muted">
-    <div id="todayDate" class="font-serif italic"></div>
-    <div class="flex items-center gap-4">
-      <div class="hidden sm:flex items-center gap-2" title="Sincronização">
-        <span id="syncDot" class="sync-dot off"></span>
-        <span id="syncTxt">offline</span>
-      </div>
-      <div class="hidden sm:flex items-center gap-3 text-sm">
-        <a href="#" class="hover:text-white" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="hover:text-white" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="#" class="hover:text-white" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
+<body class='nt-body'>
 
-<!-- MASTHEAD -->
-<div class="max-w-[1280px] mx-auto px-4 py-7 text-center border-b-2 border-brand">
-  <div class="eyebrow justify-center"><span></span>Cultura Pop · Cinema · Games · Anime<span style="content:''"></span></div>
-  <a href="#" class="block mt-2">
-    <div class="masthead-title text-5xl md:text-7xl leading-none">CALLANGO <span class="text-brand">NERD</span></div>
-  </a>
-  <p class="font-serif italic text-muted text-sm mt-2">Notícias, reviews e rankings do universo pop — direto pro seu feed.</p>
-</div>
-
-<!-- NAV -->
-<header class="hdr sticky top-0 z-40 border-b border-line" style="backdrop-filter:blur(10px); background:rgba(11,10,15,.9);">
-  <div class="max-w-[1280px] mx-auto flex items-center gap-4 px-4 py-3">
-    <button id="btnSide" class="text-white md:hidden text-lg" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
-
-    <nav class="hidden md:flex items-center gap-6 overflow-x-auto scroll-hide">
-      <a href="#" class="nav-link active">Início</a>
-      <a href="#" class="nav-link">Cinema</a>
-      <a href="#" class="nav-link">Séries</a>
-      <a href="#" class="nav-link">Games</a>
-      <a href="#" class="nav-link">Anime</a>
-      <a href="#" class="nav-link">Reviews</a>
-      <a href="#" class="nav-link">Tech</a>
-      <a href="#" class="nav-link">Descontos</a>
-    </nav>
-
-    <div class="ml-auto flex items-center gap-3">
-      <div class="relative hidden sm:block w-[220px] lg:w-[260px]">
-        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
-        <input id="search" class="search-input" placeholder="Pesquisar" />
-      </div>
-      <button id="btnLogin" class="btn-brand hidden sm:inline-flex items-center gap-2"><i class="fa-brands fa-google"></i> Entrar</button>
-      <div id="userBox" class="hidden items-center gap-2">
-        <img id="userAvatar" class="w-8 h-8 rounded-full border-2 border-brand" />
-        <button id="btnLogout" class="text-xs text-muted hover:text-white">Sair</button>
+  <!-- ============ TOPBAR ============ -->
+  <div class='nt-topbar'>
+    <div class='container nt-topbar-inner'>
+      <div>Welcome to the world of cinema</div>
+      <div>
+        <a href='#'><i class='fa-brands fa-facebook-f'/></a>
+        <a href='#'><i class='fa-brands fa-x-twitter'/></a>
+        <a href='#'><i class='fa-brands fa-instagram'/></a>
+        <a href='#'><i class='fa-brands fa-youtube'/></a>
       </div>
     </div>
   </div>
 
-  <!-- MOBILE MENU -->
-  <div id="sidebar" class="hidden md:hidden border-t border-line px-4 py-4 bg-bg">
-    <div class="relative mb-3">
-      <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted text-xs"></i>
-      <input class="search-input" placeholder="Pesquisar" />
+  <!-- ============ HEADER ============ -->
+  <header class='nt-header'>
+    <div class='container nt-header-inner'>
+      <a class='nt-logo' expr:href='data:blog.homepageUrl'>
+        <b:if cond='data:view.isHomepage'>
+          <data:blog.title/>
+        <b:else/>
+          <data:blog.title/>
+        </b:if>
+      </a>
+
+      <button aria-label='Menu' class='nt-burger'>☰</button>
+
+      <nav class='nt-nav'>
+        <b:section class='nt-menu-section' id='menu' maxwidgets='1' showaddelement='yes'>
+          <b:widget id='PageList1' locked='false' title='Menu' type='PageList' version='2' visible='true'>
+            <b:includable id='main'>
+              <ul>
+                <li><a expr:href='data:blog.homepageUrl'>Home</a></li>
+                <b:loop values='data:links' var='link'>
+                  <li><a expr:href='data:link.href'><data:link.title/></a></li>
+                </b:loop>
+              </ul>
+            </b:includable>
+          </b:widget>
+        </b:section>
+        <button aria-label='Search' class='nt-search-btn' onclick='var q=prompt(&quot;Search:&quot;); if(q) location.href=&quot;/search?q=&quot;+encodeURIComponent(q);'>
+          <i class='fa-solid fa-magnifying-glass'/>
+        </button>
+      </nav>
     </div>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-house"></i> Início</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-film"></i> Cinema</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-tv"></i> Séries</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-gamepad"></i> Games</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-dragon"></i> Anime</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-star-half-stroke"></i> Reviews</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-microchip"></i> Tech</a>
-    <a class="mobile-link" href="#"><i class="fa-solid fa-tag"></i> Descontos</a>
-    <a class="mobile-link" href="#" id="btnRefresh"><i class="fa-solid fa-rotate"></i> Sincronizar agora</a>
-    <button id="btnLoginMobile" class="btn-brand w-full mt-4 flex items-center justify-center gap-2"><i class="fa-brands fa-google"></i> Entrar com Google</button>
-  </div>
-</header>
+  </header>
 
-<main class="max-w-[1280px] mx-auto px-4 py-10">
+  <!-- ============ HERO SLIDER (homepage only) ============ -->
+  <b:if cond='data:view.isHomepage'>
+    <section class='nt-hero' id='nt-hero'>
+      <!-- Preenchido dinamicamente pelo theme.js a partir do feed /feeds/posts/default -->
+    </section>
+  </b:if>
 
-  <!-- HERO EDITORIAL: matéria principal + radar lateral -->
-  <section class="grid lg:grid-cols-3 gap-10 mb-14">
-    <div id="heroFeature" class="lg:col-span-2"></div>
-    <div>
-      <div class="sec-title"><h2 class="text-xl">No <span class="text-brand">radar</span></h2></div>
-      <div id="heroList"></div>
-    </div>
-  </section>
+  <!-- ============ MAIN ============ -->
+  <main class='nt-main'>
+    <div class='container'>
 
-  <!-- MAIS DESTAQUES (mosaico assimétrico) -->
-  <section class="mb-16">
-    <div class="sec-title"><h2>Mais <span class="text-brand">destaques</span></h2><span class="ver">Ver tudo →</span></div>
-    <div id="destaquesGrid"></div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section class="mb-16">
-    <div class="sec-title"><h2 class="text-brand">Reviews</h2><span class="ver">Ver todos →</span></div>
-    <div id="featuredReview" class="relative rounded-lg overflow-hidden aspect-[21/9] bg-surface cursor-pointer"></div>
-
-    <div class="mt-10">
-      <div class="sec-title"><h2>Últimas <span class="text-brand">reviews</span></h2></div>
-      <div id="reviewTabs" class="flex flex-wrap overflow-x-auto scroll-hide mb-6">
-        <div class="tab active" data-cat="Todos">Todos</div>
-        <div class="tab" data-cat="Games">Games</div>
-        <div class="tab" data-cat="Filme">Filme</div>
-        <div class="tab" data-cat="TV">TV</div>
-        <div class="tab" data-cat="Comics">Comics</div>
-        <div class="tab" data-cat="Tech">Tech</div>
-      </div>
-      <div id="reviewList" class="grid gap-6"></div>
-    </div>
-  </section>
-
-  <!-- MAIS LIDAS -->
-  <section class="mb-16">
-    <div class="sec-title"><h2>Mais <span class="text-brand">lidas</span></h2></div>
-    <div id="popularList" class="scroll-hide"></div>
-  </section>
-
-  <!-- TOP 10 + WIDGET TMDB -->
-  <section class="mb-16 grid lg:grid-cols-[1fr_1fr_260px] gap-10">
-    <div>
-      <div class="mb-4">
-        <h2 class="font-display text-2xl text-white">Top 10 filmes<br>esta semana</h2>
-        <p class="font-serif italic text-muted text-sm mt-2 max-w-xs">Os filmes mais populares da semana e onde assistir.</p>
-      </div>
-      <div id="topFilmes" class="h-scroll scroll-hide"></div>
-    </div>
-    <div>
-      <div class="mb-4">
-        <h2 class="font-display text-2xl text-white">Top 10 séries<br>esta semana</h2>
-        <p class="font-serif italic text-muted text-sm mt-2 max-w-xs">As séries mais populares da semana e onde assistir.</p>
-      </div>
-      <div id="topSeries" class="h-scroll scroll-hide"></div>
-    </div>
-    <div class="rounded-lg p-4 bg-surface border border-line h-fit">
-      <div class="eyebrow mb-2"><span></span>Widget TMDB</div>
-      <div class="font-display text-xl text-white">Em cartaz agora</div>
-      <div id="tmdbWidget" class="mt-3 space-y-3"></div>
-    </div>
-  </section>
-
-  <!-- GAMES E SPORTS -->
-  <section class="mb-16">
-    <div class="sec-title"><h2><i class="fa-solid fa-gamepad text-[1.1rem] text-brand mr-2"></i>Games e Sports</h2><span class="ver">Ver tudo →</span></div>
-    <div id="catGames" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5"></div>
-  </section>
-
-  <!-- ANIMES E MANGÁS -->
-  <section class="mb-16">
-    <div class="sec-title"><h2><i class="fa-solid fa-dragon text-[1.1rem] text-brand mr-2"></i>Animes e Mangás</h2><span class="ver">Ver tudo →</span></div>
-    <div id="catAnime" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
-  </section>
-
-  <!-- CINEMA E SÉRIES -->
-  <section class="mb-4">
-    <div class="sec-title"><h2><i class="fa-solid fa-film text-[1.1rem] text-brand mr-2"></i>Cinema e Séries</h2><span class="ver">Ver tudo →</span></div>
-    <div id="catCinema" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
-  </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer class="border-t border-line mt-10">
-  <div class="max-w-[1280px] mx-auto px-4 py-12 grid md:grid-cols-4 gap-10">
-    <div>
-      <div class="masthead-title text-2xl text-white">CALLANGO <span class="text-brand">NERD</span></div>
-      <p class="font-serif italic text-muted text-sm mt-3">Cultura pop com sabor caipira. Cinema, games, séries e anime, todo dia.</p>
-      <div class="flex items-center gap-3 mt-4 text-white/80">
-        <a href="#" class="hover:text-brand" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="hover:text-brand" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="#" class="hover:text-brand" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#" class="hover:text-brand" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      </div>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-muted mb-3 font-semibold">Editorias</div>
-      <div class="flex flex-col gap-2 text-sm text-white/80">
-        <a href="#" class="hover:text-brand w-fit">Cinema</a>
-        <a href="#" class="hover:text-brand w-fit">Séries</a>
-        <a href="#" class="hover:text-brand w-fit">Games</a>
-        <a href="#" class="hover:text-brand w-fit">Anime</a>
-      </div>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-muted mb-3 font-semibold">Portal</div>
-      <div class="flex flex-col gap-2 text-sm text-white/80">
-        <a href="#" class="hover:text-brand w-fit">Sobre</a>
-        <a href="#" class="hover:text-brand w-fit">Contato</a>
-        <a href="#" class="hover:text-brand w-fit">Privacidade</a>
-      </div>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-widest text-muted mb-3 font-semibold">Newsletter</div>
-      <p class="text-sm text-white/70 mb-3">As melhores matérias da semana no seu e-mail.</p>
-      <div class="flex gap-2">
-        <input class="search-input !pl-3" placeholder="seu@email.com" />
-        <button class="btn-brand shrink-0">Assinar</button>
-      </div>
-    </div>
-  </div>
-  <div class="border-t border-line">
-    <div class="max-w-[1280px] mx-auto px-4 py-5 text-xs text-muted flex flex-wrap justify-between gap-3">
-      <div>© <span id="year"></span> Callango Nerd — todos os direitos reservados.</div>
-      <div class="font-serif italic">Edição Digital</div>
-    </div>
-  </div>
-</footer>
-
-<!-- MODAL POST -->
-<div id="modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-  <div class="min-h-full flex items-start justify-center py-10 px-4">
-    <div class="modal-card max-w-4xl w-full relative">
-      <button id="modalClose" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 hover:bg-brand text-white z-10"><i class="fa-solid fa-xmark"></i></button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ====================== SCRIPT ====================== -->
-<script type="module">
-  // ============ CONFIG ============
-  const CONFIG = {
-    // Feed externo (Apps Script/Blogger/JSON). Se falhar, cai no fallback.
-    FEED_URL: 'https://script.google.com/macros/s/AKfycbzSbVe-dJtJ_Ye6or2XDNwdgfqkLMD5UWDunQ8QRMIasRTC8PLziyihO_2HU04-ioU/exec',
-    BLOGGER_FALLBACK: 'https://www.callangonerd.com/feeds/posts/default?alt=json&max-results=30',
-    TMDB_API_KEY: '', // opcional
-    // Sincronização em nuvem (Firebase)
-    FIREBASE: {
-      apiKey: "AIzaSyDEdLtXToszmY6AhSyx4OzDF8EK8bnLIzo",
-      authDomain: "callango-nerd.firebaseapp.com",
-      projectId: "callango-nerd",
-      storageBucket: "callango-nerd.firebasestorage.app",
-      messagingSenderId: "784723498893",
-      appId: "1:784723498893:web:4bfc0594c1faf5bbe38fc4",
-      measurementId: "G-QVJQFHZFD0"
-    },
-    REFRESH_MIN: 10, // sincroniza a cada N minutos
-  };
-
-  // ============ FIREBASE (Auth + Firestore) ============
-  let fbApp, fbAuth, fbDb, fbUser=null;
-  const syncDot = document.getElementById('syncDot');
-  const syncTxt = document.getElementById('syncTxt');
-
-  async function initFirebase() {
-    try {
-      const [{ initializeApp }, { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged },
-             { getFirestore, doc, setDoc, getDoc, collection, getDocs, serverTimestamp }]
-        = await Promise.all([
-          import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
-          import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js'),
-          import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'),
-        ]);
-      fbApp  = initializeApp(CONFIG.FIREBASE);
-      fbAuth = getAuth(fbApp);
-      fbDb   = getFirestore(fbApp);
-      window._fb = { doc, setDoc, getDoc, collection, getDocs, serverTimestamp, GoogleAuthProvider, signInWithPopup, signOut };
-      onAuthStateChanged(fbAuth, u => {
-        fbUser = u;
-        setSync(true, u ? `sincronizado (${u.displayName?.split(' ')[0]||'user'})` : 'sincronizado');
-        renderUser();
-        if (u) loadUserData();
-      });
-      setSync(true, 'sincronizado');
-      // cache do feed no Firestore (leitura pública)
-      await loadCachedFeed();
-    } catch(e) {
-      console.warn('Firebase off:', e);
-      setSync(false, 'offline');
-    }
-  }
-  function setSync(on, msg){ syncDot.classList.toggle('off', !on); syncTxt.textContent = msg; }
-
-  async function doLogin(){
-    if (!fbAuth) return alert('Sincronização indisponível');
-    const provider = new window._fb.GoogleAuthProvider();
-    try { await window._fb.signInWithPopup(fbAuth, provider); } catch(e){ console.warn(e); }
-  }
-  document.getElementById('btnLogin')?.addEventListener('click', doLogin);
-  document.getElementById('btnLoginMobile')?.addEventListener('click', doLogin);
-  document.getElementById('btnLogout')?.addEventListener('click', async () => {
-    if (fbAuth) await window._fb.signOut(fbAuth);
-  });
-  function renderUser(){
-    const btn = document.getElementById('btnLogin');
-    const box = document.getElementById('userBox');
-    if (fbUser) {
-      btn.classList.add('hidden'); box.classList.remove('hidden'); box.classList.add('flex');
-      document.getElementById('userAvatar').src = fbUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fbUser.displayName||'U')}`;
-    } else {
-      btn.classList.remove('hidden'); box.classList.add('hidden'); box.classList.remove('flex');
-    }
-  }
-
-  // salva reação/favorito por usuário
-  async function saveReaction(postId, type) {
-    if (!fbUser || !fbDb) { alert('Entre com Google para salvar reações.'); return; }
-    const { doc, setDoc, serverTimestamp } = window._fb;
-    await setDoc(doc(fbDb, 'users', fbUser.uid, 'reactions', postId), { type, at: serverTimestamp() });
-  }
-  async function loadUserData(){ /* placeholder para carregar favs do usuário */ }
-
-  // cache leve do último feed no Firestore (opcional)
-  async function cacheFeed(items){
-    if (!fbDb) return;
-    try {
-      const { doc, setDoc, serverTimestamp } = window._fb;
-      await setDoc(doc(fbDb, 'cache', 'feed'), { items: items.slice(0, 60), at: serverTimestamp() });
-    } catch(e){ /* regras podem bloquear escrita anônima */ }
-  }
-  async function loadCachedFeed(){
-    if (!fbDb) return null;
-    try {
-      const { doc, getDoc } = window._fb;
-      const snap = await getDoc(doc(fbDb, 'cache', 'feed'));
-      if (snap.exists()) { const d = snap.data(); if (d?.items?.length) render(d.items); }
-    } catch(e){}
-  }
-
-  // ============ FEED (Apps Script → Blogger → Demo) ============
-  const PLACEHOLDER = (seed, w=800, h=500) => `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`;
-
-  function normalize(raw){
-    if (Array.isArray(raw)) return raw.map(mapPost);
-    if (raw?.posts && Array.isArray(raw.posts)) return raw.posts.map(mapPost);
-    if (raw?.feed?.entry) return raw.feed.entry.map(mapBlogger);
-    return [];
-  }
-  function mapPost(p, i){
-    return {
-      id: p.id || p.slug || `p-${i}-${(p.title||'').slice(0,20)}`,
-      title: p.title || 'Sem título',
-      category: p.category || p.label || 'Geral',
-      image: p.image || p.thumbnail || PLACEHOLDER(p.title||i),
-      excerpt: p.excerpt || p.summary || '',
-      content: p.content || p.body || '',
-      author: p.author || 'Redação',
-      date: p.date || p.published || new Date().toISOString(),
-      score: p.score || null,
-      url: p.url || '#',
-    };
-  }
-  function mapBlogger(entry, i){
-    const html = entry?.content?.$t || entry?.summary?.$t || '';
-    const img = (html.match(/<img[^>]+src="([^">]+)"/)||[])[1] || PLACEHOLDER(entry.title?.$t||i);
-    const cat = entry.category?.[0]?.term || 'Geral';
-    const link = (entry.link||[]).find(l=>l.rel==='alternate')?.href || '#';
-    return {
-      id: entry.id?.$t || `bl-${i}`,
-      title: entry.title?.$t || 'Sem título',
-      category: cat,
-      image: img,
-      excerpt: html.replace(/<[^>]+>/g,'').slice(0, 180),
-      content: html,
-      author: entry.author?.[0]?.name?.$t || 'Redação',
-      date: entry.published?.$t || new Date().toISOString(),
-      url: link,
-    };
-  }
-
-  async function fetchFeed(){
-    try {
-      const r = await fetch(CONFIG.FEED_URL, { mode:'cors' });
-      if (r.ok) { const j = await r.json(); const n = normalize(j); if (n.length) return n; }
-    } catch(e){ console.warn('Apps Script falhou', e); }
-    try {
-      const r = await fetch(CONFIG.BLOGGER_FALLBACK);
-      if (r.ok) { const j = await r.json(); const n = normalize(j); if (n.length) return n; }
-    } catch(e){ console.warn('Blogger falhou', e); }
-    return DEMO;
-  }
-
-  // ============ DEMO DATA (fallback rico p/ inspiração) ============
-  const DEMO = [
-    { id:'1', title:'Primeiro trailer oficial de Vingadores: Doutor Destino revela Thor, Steve Rogers e mais', category:'Cinema', image:PLACEHOLDER('doom',900,600), excerpt:'Marvel revela o novo capítulo do MCU com retorno de heróis clássicos.', score:null },
-    { id:'2', title:'É por isso que A Casa do Dragão tirou esta personagem importante da série', category:'Séries', image:PLACEHOLDER('dragon',900,600), excerpt:'Showrunner explica a decisão polêmica que afeta a próxima temporada.' },
-    { id:'3', title:'Como os vampiros de The Blood of Dawnwalker vão além de serem meros chefes', category:'Games', image:PLACEHOLDER('vamp',900,600), excerpt:'Estúdio detalha sistema de facções e progressão vampírica.' },
-    { id:'4', title:'Explicando o projeto de lei que impede empresas de "matarem" os games no Brasil', category:'Games', image:PLACEHOLDER('ps5',900,600), excerpt:'Nova proposta legislativa protege consumidores brasileiros de games.' },
-
-    { id:'5', title:'Sadie Sink, estrela de Homem-Aranha: Um Novo Dia, é questionada sobre rumor envolvendo Jean Grey', category:'Cinema', image:PLACEHOLDER('sadie',600,400) },
-    { id:'6', title:'"Por favor, joguem nosso jogo quando GTA 6 for lançado": desenvolvedor de Assassin\'s Creed sugere suporte contínuo', category:'Games', image:PLACEHOLDER('ac',600,400) },
-    { id:'7', title:'Casa do Dragão: Por que Vhagar abandonou Aemond Targaryen em Harrenhal?', category:'Séries', image:PLACEHOLDER('vhagar',600,400) },
-    { id:'8', title:'Laura Fryer, uma das fundadoras do Xbox, sobre o fim da mídia física no PlayStation', category:'Tech', image:PLACEHOLDER('xbox',600,400) },
-    { id:'9', title:'Frieren ganha ilustração inédita antecipando o próximo arco do anime', category:'Anime', image:PLACEHOLDER('frieren2',600,400) },
-
-    // Reviews
-    { id:'r1', title:'A Odisseia é o épico merecido para a obra de Homero', category:'Reviews', image:PLACEHOLDER('odyssey',1200,600), score:9.5, excerpt:'Ele fez de novo! Christopher Nolan constrói um filme impecável.', author:'Lucas Berretta' },
-    { id:'r2', title:'Maior que o primeiro, Super Mario Galaxy - O Filme entrega diversão', category:'Reviews', image:PLACEHOLDER('mario',600,400), score:8.4, author:'Ana Souza' },
-    { id:'r3', title:'Adeus, Cole Young: Mortal Kombat 2 recalcula rota e acerta em cheio', category:'Reviews', image:PLACEHOLDER('mk',600,400), score:7.8, author:'Beto Lima' },
-    { id:'r4', title:'Forza Horizon 6 é incrível e tem o Japão como grande triunfo', category:'Reviews', image:PLACEHOLDER('forza',600,400), score:9.1, author:'Diego Prado' },
-
-    // Games
-    { id:'g1', title:'GTA 6 pode arrecadar até US$ 5,2 bilhões em apenas uma semana', category:'Games', image:PLACEHOLDER('gta',600,400) },
-    { id:'g2', title:'XBOX teria solução para o fim dos discos já na próxima semana', category:'Games', image:PLACEHOLDER('xbox2',600,400) },
-    { id:'g3', title:'PlayStation e o fim da mídia física motivam novo projeto de lei no Brasil', category:'Games', image:PLACEHOLDER('ps',600,400) },
-    { id:'g4', title:'PlayStation não terá fim da mídia física barrado pela União Europeia', category:'Games', image:PLACEHOLDER('ghost',600,400) },
-    { id:'g5', title:'GTA 6 vai exigir documento de motorista real para jogar online', category:'Games', image:PLACEHOLDER('gta2',600,400) },
-
-    // Anime
-    { id:'a1', title:'Ghost in the Shell | Novo anime tem arte inédita do criador de DAN DA DAN', category:'Anime', image:PLACEHOLDER('gits',600,400) },
-    { id:'a2', title:'Black Clover lança novo trailer da 2ª temporada e revela música tema do WANIMA', category:'Anime', image:PLACEHOLDER('bclover',600,400) },
-    { id:'a3', title:'Frieren e a Jornada para o Além ganha ilustração inédita na Anime Expo 2026', category:'Anime', image:PLACEHOLDER('frieren',600,400) },
-    { id:'a4', title:'Ghost of Tsushima em anime ganha primeiro pôster', category:'Anime', image:PLACEHOLDER('tsushima',600,400) },
-
-    // Top 10 filmes
-    { id:'f1', kind:'top', title:'Backrooms', category:'Filme', image:PLACEHOLDER('backr',400,600) },
-    { id:'f2', kind:'top', title:'A Odisseia', category:'Filme', image:PLACEHOLDER('odyss',400,600) },
-    { id:'f3', kind:'top', title:'Drama', category:'Filme', image:PLACEHOLDER('drama',400,600) },
-    { id:'f4', kind:'top', title:'Obsession', category:'Filme', image:PLACEHOLDER('obses',400,600) },
-    { id:'f5', kind:'top', title:'Projeto Hail Mary', category:'Filme', image:PLACEHOLDER('hail',400,600) },
-
-    { id:'s1', kind:'topS', title:'Lucky', category:'Série', image:PLACEHOLDER('lucky',400,600) },
-    { id:'s2', kind:'topS', title:'The Westies', category:'Série', image:PLACEHOLDER('west',400,600) },
-    { id:'s3', kind:'topS', title:'A Casa do Dragão', category:'Série', image:PLACEHOLDER('hotd',400,600) },
-    { id:'s4', kind:'topS', title:'Silo', category:'Série', image:PLACEHOLDER('silo',400,600) },
-    { id:'s5', kind:'topS', title:'I Will Find You', category:'Série', image:PLACEHOLDER('iwill',400,600) },
-  ];
-
-  // ============ RENDER ============
-  let ALL = [];
-  const $ = s => document.querySelector(s);
-  const escape = s => (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-
-  function ticketHTML(score, scale){
-    if (!score) return '';
-    const t = scale ? ` style="transform:scale(${scale});transform-origin:left center"` : '';
-    return `<div class="ticket"${t}><div class="score">${score}</div><div class="seam"></div><div class="label">NOTA</div></div>`;
-  }
-
-  function cardHTML(p){
-    return `
-      <div class="card" data-id="${p.id}">
-        <div class="thumb"><img src="${p.image}" alt="${escape(p.title)}" loading="lazy"/>
-          ${p.score ? `<div class="absolute bottom-2 left-2">${ticketHTML(p.score,.7)}</div>`:''}
+      <b:if cond='data:view.isHomepage'>
+        <div class='nt-section-head'>
+          <h2 class='nt-section-title'>Latest posts</h2>
+          <a class='nt-section-more' expr:href='data:blog.homepageUrl'>View all →</a>
         </div>
-        <div class="eyebrow mt-2"><span></span>${escape(p.category)}</div>
-        <h3>${escape(p.title)}</h3>
-        ${p.author?`<div class="meta">por ${escape(p.author)}</div>`:''}
-      </div>`;
-  }
+      </b:if>
 
-  function renderReviews(cat){
-    const r = ALL.filter(p => p.category==='Reviews' || p.score).filter(p => cat==='Todos' || (p.category===cat));
-    $('#reviewList').innerHTML = r.slice(0,6).map(p => `
-      <div class="card grid grid-cols-[160px_1fr] md:grid-cols-[220px_1fr] gap-4 items-start bg-surface/50 rounded-lg p-3" data-id="${p.id}">
-        <div class="thumb aspect-video"><img src="${p.image}" alt="${escape(p.title)}"/></div>
+      <b:if cond='data:view.isLabelSearch'>
+        <div class='nt-section-head'>
+          <h2 class='nt-section-title'><data:view.search.label/></h2>
+        </div>
+      </b:if>
+
+      <b:if cond='data:view.isSearch'>
+        <div class='nt-section-head'>
+          <h2 class='nt-section-title'>Search results</h2>
+        </div>
+      </b:if>
+
+      <b:if cond='data:view.isSingleItem'>
+        <div class='item-page'>
+      </b:if>
+
+      <b:section class='main-blog' id='main' showaddelement='no'>
+        <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' version='2' visible='true'>
+          <b:widget-settings>
+            <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+            <b:widget-setting name='style.bordercolor'>transparent</b:widget-setting>
+            <b:widget-setting name='postsPerAd'>0</b:widget-setting>
+            <b:widget-setting name='showShareButtons'>true</b:widget-setting>
+            <b:widget-setting name='showCommentLink'>true</b:widget-setting>
+            <b:widget-setting name='showAuthor'>true</b:widget-setting>
+            <b:widget-setting name='showTimestamp'>true</b:widget-setting>
+            <b:widget-setting name='showLabels'>true</b:widget-setting>
+          </b:widget-settings>
+          <b:includable id='main'>
+            <b:include name='super.main'/>
+          </b:includable>
+        </b:widget>
+      </b:section>
+
+      <b:if cond='data:view.isSingleItem'>
+        </div>
+      </b:if>
+
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class='nt-footer'>
+    <div class='container'>
+      <div class='nt-footer-grid'>
+
         <div>
-          <div class="eyebrow"><span></span>${escape(p.category)}</div>
-          <h3 class="text-lg mt-1">${escape(p.title)}</h3>
-          <div class="meta mt-1">${timeAgo(p.date)} — ${escape(p.excerpt||'').slice(0,120)}...</div>
-          <div class="flex gap-3 mt-3 items-center">
-            ${ticketHTML(p.score, .75)}
-            <span class="text-xs text-muted font-serif italic">por ${escape(p.author||'Redação')}</span>
+          <div class='nt-footer-logo'><data:blog.title/></div>
+          <p>Reviews, notícias e novidades do universo do cinema. Um blog inspirado nas grandes telas.</p>
+          <div class='nt-socials'>
+            <a href='#'><i class='fa-brands fa-facebook-f'/></a>
+            <a href='#'><i class='fa-brands fa-x-twitter'/></a>
+            <a href='#'><i class='fa-brands fa-instagram'/></a>
+            <a href='#'><i class='fa-brands fa-youtube'/></a>
           </div>
         </div>
-      </div>`).join('') || `<div class="text-muted text-sm">Nenhum review nesta categoria ainda.</div>`;
-  }
 
-  function timeAgo(iso){
-    if (!iso) return '';
-    const d = new Date(iso), diff = (Date.now()-d.getTime())/1000;
-    if (diff<60) return 'agora';
-    if (diff<3600) return `${Math.floor(diff/60)} min`;
-    if (diff<86400) return `${Math.floor(diff/3600)} h`;
-    if (diff<86400*30) return `${Math.floor(diff/86400)} dias`;
-    return d.toLocaleDateString('pt-BR');
-  }
-
-  // ============ MODAL ============
-  function openPost(id){
-    const p = ALL.find(x=>String(x.id)===String(id)); if (!p) return;
-    $('#modalBody').innerHTML = `
-      <div class="relative">
-        <img src="${p.image}" class="w-full aspect-[21/9] object-cover rounded-t-lg" alt=""/>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0e14] via-transparent to-transparent rounded-t-lg"></div>
-      </div>
-      <div class="p-6 md:p-8">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="eyebrow"><span></span>${escape(p.category)}</div>
-          ${ticketHTML(p.score, .75)}
-          <span class="text-xs text-muted font-serif italic ml-auto">${timeAgo(p.date)} • por ${escape(p.author||'Redação')}</span>
-        </div>
-        <h1 class="font-display text-3xl md:text-5xl text-white leading-tight mb-4">${escape(p.title)}</h1>
-        <p class="font-serif italic text-muted text-lg mb-6">${escape(p.excerpt||'')}</p>
-        <div class="prose prose-invert max-w-none text-white/90">${p.content || `<p>${escape(p.excerpt||'')}</p><p class="text-muted">Conteúdo completo em breve. Este é um preview do post carregado do feed.</p>`}</div>
-
-        <div class="mt-8 border-t border-line pt-6">
-          <div class="text-xs text-muted uppercase tracking-widest mb-3">Qual é a sua vibe?</div>
-          <div class="flex flex-wrap gap-2">
-            <button class="react-btn" data-r="love">😍 Amei</button>
-            <button class="react-btn" data-r="fire">🔥 Épico</button>
-            <button class="react-btn" data-r="wow">🤯 Uau</button>
-            <button class="react-btn" data-r="meh">😐 Meh</button>
-            <button class="react-btn" data-r="save"><i class="fa-solid fa-bookmark"></i> Salvar</button>
-          </div>
-          ${!fbUser?`<div class="text-xs text-muted mt-3">Entre com Google no topo da página para salvar sua reação na nuvem.</div>`:''}
-        </div>
-      </div>
-    `;
-    $('#modal').classList.remove('hidden'); document.body.classList.add('modal-open');
-    $('#modalBody').querySelectorAll('.react-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        $('#modalBody').querySelectorAll('.react-btn').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        saveReaction(p.id, b.dataset.r);
-      });
-    });
-  }
-  function closePost(){ $('#modal').classList.add('hidden'); document.body.classList.remove('modal-open'); }
-  $('#modalClose').addEventListener('click', closePost);
-  $('#modal').addEventListener('click', e => { if (e.target.id==='modal') closePost(); });
-
-  function bindClicks(){
-    document.querySelectorAll('[data-id]').forEach(el => {
-      el.addEventListener('click', () => openPost(el.dataset.id));
-    });
-  }
-
-  // ============ TABS REVIEW ============
-  document.querySelectorAll('#reviewTabs .tab').forEach(t => {
-    t.addEventListener('click', () => {
-      document.querySelectorAll('#reviewTabs .tab').forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-      renderReviews(t.dataset.cat);
-      bindClicks();
-    });
-  });
-
-  // ============ BUSCA ============
-  document.getElementById('search')?.addEventListener('input', e => {
-    const q = e.target.value.toLowerCase().trim();
-    if (!q) return render(ALL.length?ALL:DEMO);
-    render(ALL.filter(p => (p.title+' '+p.category+' '+(p.excerpt||'')).toLowerCase().includes(q)));
-  });
-
-  // ============ TMDB WIDGET ============
-  async function loadTMDB(){
-    if (!CONFIG.TMDB_API_KEY) {
-      document.getElementById('tmdbWidget').innerHTML = `<div class="text-xs text-muted">Configure <code class="text-brand">CONFIG.TMDB_API_KEY</code> no script para exibir filmes reais.</div>`;
-      return;
-    }
-    try {
-      const r = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${CONFIG.TMDB_API_KEY}&language=pt-BR&page=1`);
-      const j = await r.json();
-      document.getElementById('tmdbWidget').innerHTML = j.results.slice(0,4).map(m => `
-        <div class="flex gap-3 items-center">
-          <img src="https://image.tmdb.org/t/p/w92${m.poster_path}" class="w-12 h-16 object-cover rounded"/>
-          <div>
-            <div class="text-sm font-semibold text-white line-clamp-2">${escape(m.title)}</div>
-            <div class="text-xs text-brand">★ ${m.vote_average.toFixed(1)}</div>
-          </div>
-        </div>`).join('');
-    } catch(e) { console.warn(e); }
-  }
-
-  // ============ MENU MOBILE ============
-  document.getElementById('btnSide')?.addEventListener('click', () => {
-    const s = document.getElementById('sidebar');
-    s.classList.toggle('hidden'); s.classList.toggle('block');
-  });
-
-  function render(items){
-    ALL = items;
-
-    // HERO: matéria principal + radar lateral (próximos 4)
-    const featured = items.filter(p=>!p.kind && p.category!=='Reviews');
-    const feature = featured[0];
-    if (feature) {
-      $('#heroFeature').innerHTML = `
-        <img src="${feature.image}" alt="${escape(feature.title)}" loading="lazy"/>
-        <div class="grad"></div>
-        <div class="content">
-          <div class="eyebrow on-image"><span></span>${escape(feature.category)}</div>
-          <h1>${escape(feature.title)}</h1>
-          <p class="hidden md:block text-white/75 text-base mt-3 max-w-2xl">${escape((feature.excerpt||'').slice(0,140))}</p>
-        </div>`;
-      $('#heroFeature').dataset.id = feature.id;
-    }
-    const radar = featured.slice(1,5);
-    $('#heroList').innerHTML = radar.map((p,i) => `
-      <div class="radar-item" data-id="${p.id}">
-        <div class="radar-num">${String(i+1).padStart(2,'0')}</div>
         <div>
-          <div class="eyebrow"><span></span>${escape(p.category)}</div>
-          <h4>${escape(p.title)}</h4>
+          <h4>Categorias</h4>
+          <b:section class='footer-labels' id='footer-labels' maxwidgets='1' showaddelement='yes'>
+            <b:widget id='Label99' locked='false' title='' type='Label' version='2' visible='true'>
+              <b:widget-settings>
+                <b:widget-setting name='display'>LIST</b:widget-setting>
+                <b:widget-setting name='sorting'>ALPHA</b:widget-setting>
+                <b:widget-setting name='showType'>ALL</b:widget-setting>
+                <b:widget-setting name='showFreqNumbers'>false</b:widget-setting>
+              </b:widget-settings>
+              <b:includable id='main'>
+                <b:include name='content'/>
+              </b:includable>
+            </b:widget>
+          </b:section>
         </div>
-      </div>`).join('');
 
-    // MAIS DESTAQUES — próximos itens
-    const dest = featured.slice(5,13);
-    $('#destaquesGrid').innerHTML = dest.map(cardHTML).join('');
-
-    // REVIEW EM DESTAQUE
-    const reviews = items.filter(p=>p.category==='Reviews' || p.score);
-    const rf = reviews[0];
-    if (rf) {
-      $('#featuredReview').innerHTML = `
-        <img src="${rf.image}" class="absolute inset-0 w-full h-full object-cover" alt=""/>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-        <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
-          ${ticketHTML(rf.score || 9.5)}
-          <h3 class="hidden sm:block text-white font-display text-xl md:text-2xl text-right max-w-md">${escape(rf.title)}</h3>
+        <div>
+          <h4>Arquivo</h4>
+          <b:section class='footer-archive' id='footer-archive' maxwidgets='1' showaddelement='yes'>
+            <b:widget id='BlogArchive99' locked='false' title='' type='BlogArchive' version='2' visible='true'>
+              <b:widget-settings>
+                <b:widget-setting name='style'>MENU</b:widget-setting>
+              </b:widget-settings>
+              <b:includable id='main'>
+                <b:include name='flat'/>
+              </b:includable>
+            </b:widget>
+          </b:section>
         </div>
-        <div class="absolute top-6 right-6 eyebrow on-image">Destaque</div>
-      `;
-      $('#featuredReview').dataset.id = rf.id;
-    }
-    renderReviews('Todos');
 
-    // TOP 10 FILMES / SÉRIES
-    const filmes = items.filter(p=>p.kind==='top').slice(0,10);
-    const series = items.filter(p=>p.kind==='topS').slice(0,10);
-    const rankHTML = (arr) => arr.map((p, i) => `
-      <div class="rank-item" data-id="${p.id}">
-        <div class="rank-num">${i+1}</div>
-        <div class="rank-poster">
-          <i class="fa-solid fa-bookmark bookmark"></i>
-          <img src="${p.image}" alt="${escape(p.title)}" loading="lazy"/>
+        <div>
+          <h4>Recentes</h4>
+          <b:section class='footer-recent' id='footer-recent' maxwidgets='1' showaddelement='yes'>
+            <b:widget id='FeaturedPost99' locked='false' title='' type='FeaturedPost' version='2' visible='true'>
+              <b:includable id='main'>
+                <b:include name='super.main'/>
+              </b:includable>
+            </b:widget>
+          </b:section>
         </div>
-      </div>`).join('');
-    $('#topFilmes').innerHTML = rankHTML(filmes);
-    $('#topSeries').innerHTML = rankHTML(series);
 
-    // CATEGORIAS
-    $('#catGames').innerHTML  = items.filter(p=>p.category==='Games').slice(0,5).map(cardHTML).join('');
-    $('#catAnime').innerHTML  = items.filter(p=>p.category==='Anime').slice(0,4).map(cardHTML).join('');
-    $('#catCinema').innerHTML = items.filter(p=>['Cinema','Séries'].includes(p.category)).slice(0,4).map(cardHTML).join('');
+      </div>
 
-    // MAIS LIDAS
-    const pop = reviews.slice(0,6).length ? reviews.slice(0,6) : featured.slice(0,6);
-    $('#popularList').innerHTML = pop.map((p,i) => `
-      <div class="pop-item" data-id="${p.id}">
-        <div class="thumb">
-          <div class="pop-num">${i+1}</div>
-          <img src="${p.image}" alt="${escape(p.title)}" loading="lazy"/>
-        </div>
-        <h4>${escape(p.title)}</h4>
-      </div>`).join('');
+      <div class='nt-copyright'>
+        © <script>document.write(new Date().getFullYear());</script> <data:blog.title/> — All rights reserved
+      </div>
+    </div>
+  </footer>
 
-    bindClicks();
-    cacheFeed(items);
-  }
+  <!-- >>> EDITAR <<< : troque SEU-USUARIO/newstar-blogger pelo seu repo do GitHub -->
+  <script src='https://cdn.jsdelivr.net/gh/SEU-USUARIO/newstar-blogger@main/public/blogger/theme.js'/>
 
-  // ============ INIT ============
-  document.getElementById('year').textContent = new Date().getFullYear();
-  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  document.getElementById('btnRefresh')?.addEventListener('click', async (e) => {
-    e.preventDefault(); setSync(true,'sincronizando...');
-    const items = await fetchFeed(); render(items); setSync(true,'sincronizado');
-  });
-
-  (async function boot(){
-    initFirebase();
-    render(DEMO); // render imediato
-    const items = await fetchFeed();
-    render(items);
-    loadTMDB();
-    setInterval(async () => { const it = await fetchFeed(); render(it); }, CONFIG.REFRESH_MIN*60*1000);
-  })();
-</script>
 </body>
 </html>
