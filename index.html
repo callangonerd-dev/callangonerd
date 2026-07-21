@@ -1,616 +1,820 @@
-<!doctype html>
-<html lang="pt-br" class="dark">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.3.0' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Callango Nerd — Cinema, Críticas & Cultura Pop</title>
-  <meta name="description" content="Notícias, críticas e análises de filmes, séries e cultura pop."/>
-  
-  <!-- Fontes & Ícones -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#ff0000',
-            ink: { 950: '#060d17', 900: '#0a121d', 800: '#0c131e', 700: '#111a27', 600: '#182233' },
-          },
-          fontFamily: {
-            sans: ['Outfit', 'system-ui', 'sans-serif'],
-            display: ['Anton', 'Outfit', 'sans-serif']
-          },
-          boxShadow: {
-            glow: '0 0 40px -10px rgba(255,0,0,.55)',
-          }
-        }
-      }
-    }
-  </script>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, viewport-fit=cover' name='viewport'/>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'/>
 
-  <!-- Estilos Avançados (Camada UI / Glassmorphism) -->
-  <style>
-    html, body { background: #060d17; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 300; overflow-x: hidden; scroll-behavior: smooth; }
-    .font-display { font-family: 'Anton', sans-serif; letter-spacing: .02em; }
-    .glass { background: rgba(12, 19, 30, 0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .grad-hero { background: linear-gradient(180deg, rgba(6,13,23,0) 0%, rgba(6,13,23,0.6) 55%, rgba(6,13,23,1) 100%); }
-    .grad-side { background: linear-gradient(90deg, rgba(6,13,23,0.95) 0%, rgba(6,13,23,0.5) 55%, rgba(6,13,23,0) 100%); }
-    .hover-zoom img { transition: transform .6s cubic-bezier(0.16, 1, 0.3, 1); }
-    .hover-zoom:hover img { transform: scale(1.08); }
-    .btn-glow { transition: all .3s ease; }
-    .btn-glow:hover { box-shadow: 0 10px 30px -8px rgba(255,0,0,0.6); transform: translateY(-2px); }
-    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #060d17; }
-    ::-webkit-scrollbar-thumb { background: #182233; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #ff0000; }
-  </style>
+<b:include data='blog' name='all-head-content'/>
+
+<title><data:blog.pageTitle/></title>
+
+<b:if cond='data:blog.metaDescription != &quot;&quot;'>
+  <meta expr:content='data:blog.metaDescription' name='description'/>
+</b:if>
+
+<!-- Open Graph -->
+<meta expr:content='data:blog.pageTitle' property='og:title'/>
+<meta content='website' property='og:type'/>
+<meta expr:content='data:blog.canonicalUrl' property='og:url'/>
+<b:if cond='data:blog.postImageUrl'>
+  <meta expr:content='data:blog.postImageUrl' property='og:image'/>
+</b:if>
+<meta content='summary_large_image' name='twitter:card'/>
+
+<!-- Fontes -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=Oswald:wght@400;600;700&amp;display=swap' rel='stylesheet'/>
+
+<!-- Lucide-like icons via inline SVG (nada externo obrigatório). Font Awesome opcional: -->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css' rel='stylesheet'/>
+
+<b:skin><![CDATA[/*
+Variable definitions
+====================
+<Variable name="body.bg" description="Fundo" type="color" default="#0a0806" value="#0a0806"/>
+<Variable name="body.fg" description="Texto" type="color" default="#f5f0ea" value="#f5f0ea"/>
+<Variable name="surface" description="Superfície" type="color" default="#151110" value="#151110"/>
+<Variable name="surface.elev" description="Superfície elevada" type="color" default="#1e1917" value="#1e1917"/>
+<Variable name="primary" description="Acento principal (cinema red)" type="color" default="#e6392b" value="#e6392b"/>
+<Variable name="gold" description="Ouro" type="color" default="#e6b34a" value="#e6b34a"/>
+<Variable name="muted" description="Sutil" type="color" default="#8a827b" value="#8a827b"/>
+<Variable name="border" description="Borda" type="color" default="#2a2320" value="#2a2320"/>
+*/
+
+/* =========================================================
+   CINESTAR — Blogger Template (Cinematic Dark)
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:$(body.bg);
+  color:$(body.fg);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block;loading:lazy}
+a{color:inherit;text-decoration:none;transition:color .3s}
+a:hover{color:$(gold)}
+h1,h2,h3,h4,h5,h6{font-family:'Bebas Neue','Oswald',sans-serif;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;font-weight:400}
+button{cursor:pointer;font-family:inherit;border:0;background:none;color:inherit}
+
+/* Layout wrapper */
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+@media(min-width:1024px){.container{padding:0 48px}}
+
+/* Utilities */
+.glass{background:rgba(20,16,14,.6);backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.08)}
+.text-glow{text-shadow:0 0 20px rgba(230,57,43,.55)}
+.gradient-accent{background:linear-gradient(135deg,$(primary),#f36b23)}
+.gradient-gold{background:linear-gradient(135deg,$(gold),#d29434)}
+.badge{display:inline-block;padding:5px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;border-radius:2px;background:rgba(255,255,255,.1)}
+.badge.accent{background:$(primary);color:#fff}
+.badge.gold{background:$(gold);color:#000}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;font-size:12px;border-radius:2px;transition:all .3s}
+.btn.primary{background:linear-gradient(135deg,$(primary),#f36b23);color:#fff;box-shadow:0 0 40px rgba(230,57,43,.4)}
+.btn.primary:hover{filter:brightness(1.15);transform:translateY(-2px);color:#fff}
+.btn.ghost{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.btn.ghost:hover{background:rgba(255,255,255,.1);color:$(gold)}
+
+/* ================= HEADER ================= */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:all .3s;background:transparent}
+.site-header.scrolled{background:rgba(10,8,6,.85);backdrop-filter:blur(16px);padding:12px 0;border-bottom:1px solid $(border)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.site-brand{display:flex;align-items:center;gap:10px;font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.2em;color:#fff}
+.site-brand .dot{color:$(primary)}
+.site-brand i{color:$(primary);font-size:24px}
+.main-nav{display:none;gap:32px}
+@media(min-width:1024px){.main-nav{display:flex}}
+.main-nav a{font-size:12px;text-transform:uppercase;letter-spacing:.2em;font-weight:600;color:rgba(255,255,255,.7);position:relative;padding:6px 0}
+.main-nav a:hover{color:#fff}
+.main-nav a.active{color:$(gold)}
+.main-nav a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:$(gold)}
+.header-tools{display:flex;align-items:center;gap:12px}
+.icon-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:2px;color:rgba(255,255,255,.7)}
+.icon-btn:hover{color:$(gold);background:rgba(255,255,255,.05)}
+.menu-toggle{display:flex}
+@media(min-width:1024px){.menu-toggle{display:none}}
+.mobile-nav{display:none;flex-direction:column;margin-top:12px;padding:16px 24px;background:rgba(20,16,14,.95);backdrop-filter:blur(16px);border:1px solid $(border)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:14px 0;font-size:12px;text-transform:uppercase;letter-spacing:.2em;font-weight:600;border-bottom:1px solid rgba(255,255,255,.05)}
+
+/* Search overlay */
+.search-overlay{position:fixed;inset:0;background:rgba(10,8,6,.95);backdrop-filter:blur(20px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+.search-overlay.open{display:flex}
+.search-overlay form{width:100%;max-width:600px}
+.search-overlay input{width:100%;background:transparent;border:0;border-bottom:2px solid $(gold);padding:16px 0;font-size:24px;font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;color:#fff;outline:none;text-transform:uppercase}
+.search-overlay .close{position:absolute;top:24px;right:24px}
+
+/* ================= HERO / SLIDER (featured posts) ================= */
+.hero-section{position:relative;min-height:85vh;overflow:hidden;padding-top:100px;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.35}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,$(body.bg) 0%,rgba(10,8,6,.7) 50%,transparent 100%),linear-gradient(180deg,transparent 0%,rgba(10,8,6,.7) 60%,$(body.bg) 100%)}
+.hero-content{position:relative;z-index:1;max-width:640px}
+.hero-eyebrow{color:$(primary);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px}
+.hero-title{font-size:clamp(48px,7vw,96px);font-weight:400;line-height:.95;margin-bottom:20px}
+.hero-title a{color:#fff}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;color:rgba(255,255,255,.7);font-size:14px;margin-bottom:24px}
+.hero-meta .star{color:$(gold);margin-right:4px}
+.hero-excerpt{color:rgba(255,255,255,.75);font-size:17px;line-height:1.7;margin-bottom:32px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ================= SECTION HEADS ================= */
+.section{padding:80px 0}
+.section.alt{background:$(surface)}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+.section-head .eyebrow{color:$(primary);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+.section-head h2{font-size:clamp(32px,4vw,56px);margin-top:8px}
+.section-head .more{color:$(gold);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px}
+
+/* ================= POST GRID (movie cards) ================= */
+.post-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+@media(min-width:640px){.post-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.post-grid{grid-template-columns:repeat(4,1fr)}}
+
+.movie-card{position:relative;background:$(surface);border-radius:2px;overflow:hidden;cursor:pointer}
+.movie-card .thumb{position:relative;aspect-ratio:2/3;overflow:hidden}
+.movie-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.movie-card:hover .thumb img{transform:scale(1.1)}
+.movie-card .thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,transparent 45%,rgba(0,0,0,.85) 100%)}
+.movie-card .badge-top-left{position:absolute;top:12px;left:12px;z-index:2}
+.movie-card .rating-badge{position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;gap:4px;padding:6px 10px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);border-radius:2px;font-size:12px;font-weight:700}
+.movie-card .rating-badge i{color:$(gold);font-size:11px}
+.movie-card .play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:2}
+.movie-card:hover .play-overlay{opacity:1}
+.movie-card .play-btn{width:64px;height:64px;border-radius:50%;background:$(primary);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(230,57,43,.6)}
+.movie-card .play-btn i{color:#fff;font-size:22px;margin-left:4px}
+.movie-card .info{position:absolute;bottom:0;left:0;right:0;padding:16px;z-index:3}
+.movie-card .info h3{font-size:20px;color:#fff;line-height:1.2;transition:color .3s}
+.movie-card:hover .info h3{color:$(gold)}
+.movie-card .info .meta{margin-top:6px;font-size:11px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.1em}
+
+/* ================= GOSSIP / NEWS CARDS ================= */
+.gossip-grid{display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:768px){.gossip-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.gossip-grid{grid-template-columns:repeat(4,1fr)}}
+
+.gossip-card{background:$(surface);border-radius:2px;overflow:hidden}
+.gossip-card .thumb{aspect-ratio:16/10;overflow:hidden;position:relative}
+.gossip-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.gossip-card:hover .thumb img{transform:scale(1.1)}
+.gossip-card .badge-top-left{position:absolute;top:12px;left:12px}
+.gossip-card .body{padding:20px}
+.gossip-card h3{font-size:20px;line-height:1.2;margin-bottom:10px;transition:color .3s}
+.gossip-card:hover h3{color:$(gold)}
+.gossip-card .excerpt{font-size:14px;color:$(muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gossip-card .meta-row{display:flex;gap:14px;font-size:11px;color:$(muted);text-transform:uppercase;letter-spacing:.1em}
+.gossip-card .meta-row i{margin-right:4px}
+
+/* ================= LAYOUT: two column (article + sidebar) ================= */
+.two-col{display:grid;grid-template-columns:1fr;gap:48px}
+@media(min-width:1024px){.two-col{grid-template-columns:1fr 340px}}
+.sidebar-widgets .widget{background:$(surface);padding:24px;margin-bottom:24px;border-radius:2px}
+.sidebar-widgets h4.widget-title{color:$(gold);font-size:13px;letter-spacing:.25em;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid $(border)}
+
+/* ================= SINGLE POST (movie / gossip) ================= */
+.post-hero{position:relative;min-height:70vh;padding-top:100px;overflow:hidden}
+.post-hero-bg{position:absolute;inset:0;z-index:0}
+.post-hero-bg img{width:100%;height:100%;object-fit:cover}
+.post-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,8,6,.4) 0%,rgba(10,8,6,.7) 60%,$(body.bg) 100%),linear-gradient(90deg,$(body.bg) 0%,rgba(10,8,6,.5) 60%,transparent 100%)}
+.post-hero-content{position:relative;z-index:1;padding:120px 0 60px;display:grid;grid-template-columns:1fr;gap:32px;align-items:end}
+@media(min-width:768px){.post-hero-content{grid-template-columns:240px 1fr}}
+.post-hero-poster img{width:100%;border-radius:2px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.post-hero-title{font-size:clamp(40px,6vw,80px);color:#fff;line-height:.95;margin:16px 0}
+.post-hero-meta{display:flex;flex-wrap:wrap;gap:16px;color:rgba(255,255,255,.8);font-size:14px;margin-bottom:24px}
+
+.post-body{padding:60px 0}
+.post-body .content{font-size:17px;line-height:1.85;color:rgba(245,240,234,.85)}
+.post-body .content p{margin-bottom:24px}
+.post-body .content h2{font-size:32px;margin:40px 0 20px;color:#fff}
+.post-body .content h3{font-size:24px;margin:32px 0 16px;color:#fff}
+.post-body .content a{color:$(gold);border-bottom:1px solid rgba(230,179,74,.3)}
+.post-body .content img{border-radius:2px;margin:24px 0}
+.post-body .content blockquote{border-left:3px solid $(primary);padding:8px 24px;margin:24px 0;font-style:italic;color:rgba(255,255,255,.75)}
+
+/* Post tech-sheet (movies) */
+.tech-sheet dl{display:grid;gap:16px}
+.tech-sheet dt{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:$(muted);margin-bottom:4px}
+.tech-sheet dd{font-size:15px;color:#fff;font-weight:600}
+
+/* Trailer embed */
+.trailer-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:2px;margin:24px 0}
+.trailer-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Gallery */
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:24px 0}
+@media(min-width:768px){.gallery{grid-template-columns:repeat(3,1fr)}}
+.gallery img{aspect-ratio:16/10;object-fit:cover;border-radius:2px;transition:opacity .3s;cursor:pointer}
+.gallery img:hover{opacity:.75}
+
+/* Share bar */
+.share-bar{display:flex;flex-wrap:wrap;gap:10px;padding:20px 0;margin:32px 0;border-top:1px solid $(border);border-bottom:1px solid $(border)}
+.share-bar span{font-size:11px;text-transform:uppercase;letter-spacing:.25em;color:$(muted);display:inline-flex;align-items:center;margin-right:8px}
+.share-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.05);display:inline-flex;align-items:center;justify-content:center;transition:all .3s}
+.share-btn:hover{background:$(primary);color:#fff;transform:translateY(-3px)}
+
+/* Author card */
+.author-card{display:flex;gap:20px;align-items:center;padding:24px;background:$(surface);border-radius:2px;margin:32px 0}
+.author-card .avatar{width:72px;height:72px;border-radius:50%;background:$(primary);display:flex;align-items:center;justify-content:center;font-size:28px;font-family:'Bebas Neue',sans-serif;color:#fff;flex-shrink:0}
+.author-card .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.author-card .name{font-size:20px;color:#fff}
+.author-card .role{font-size:12px;color:$(muted);text-transform:uppercase;letter-spacing:.2em;margin-top:4px}
+
+/* Countdown */
+.countdown{display:flex;gap:8px;margin-top:16px}
+.countdown .box{padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid $(border);border-radius:2px;text-align:center;min-width:70px}
+.countdown .num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:$(gold);line-height:1}
+.countdown .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:$(muted);margin-top:4px}
+
+/* Coming-soon list */
+.coming-list{display:flex;flex-direction:column;gap:32px}
+.coming-item{display:grid;grid-template-columns:1fr;gap:0;background:$(surface);border-radius:2px;overflow:hidden}
+@media(min-width:768px){.coming-item{grid-template-columns:300px 1fr}}
+.coming-item .poster{position:relative;aspect-ratio:2/3;overflow:hidden}
+.coming-item .poster img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.coming-item:hover .poster img{transform:scale(1.05)}
+.coming-item .details{position:relative;padding:32px}
+.coming-item .details h3{font-size:32px;color:#fff;margin:12px 0}
+.coming-item:hover .details h3{color:$(gold)}
+.coming-item .details p{color:$(muted);margin-bottom:16px}
+
+/* Reviews (rating showcase) */
+.review-grid{display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:768px){.review-grid{grid-template-columns:repeat(2,1fr)}}
+.review-card{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:20px;background:rgba(20,16,14,.6);border:1px solid $(border);border-radius:2px;transition:border-color .3s}
+.review-card:hover{border-color:$(primary)}
+.review-card .poster{aspect-ratio:2/3;overflow:hidden;border-radius:2px}
+.review-card .poster img{width:100%;height:100%;object-fit:cover}
+.review-card .score{font-family:'Bebas Neue',sans-serif;font-size:48px;color:$(gold);line-height:1}
+.review-card h3{font-size:20px;color:#fff;margin:10px 0}
+.review-card .excerpt{font-size:14px;color:$(muted);line-height:1.6}
+
+/* Filters */
+.filters{display:grid;grid-template-columns:1fr;gap:16px;padding:24px;background:rgba(20,16,14,.6);backdrop-filter:blur(16px);border:1px solid $(border);border-radius:2px;margin-bottom:40px}
+@media(min-width:768px){.filters{grid-template-columns:repeat(3,1fr)}}
+.filters label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:$(muted);margin-bottom:8px}
+.filters select{width:100%;background:$(body.bg);border:1px solid $(border);padding:10px 12px;color:#fff;font-family:inherit;font-size:14px;border-radius:2px;outline:none}
+.filters select:focus{border-color:$(primary)}
+
+/* Category chips */
+.chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.chip{padding:10px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.2em;font-weight:700;background:rgba(255,255,255,.05);border:1px solid $(border);border-radius:2px;transition:all .3s}
+.chip:hover, .chip.active{background:linear-gradient(135deg,$(primary),#f36b23);color:#fff;border-color:transparent;box-shadow:0 0 30px rgba(230,57,43,.4)}
+
+/* Comments */
+.comments-section{margin-top:48px}
+.comments-section h3{font-size:26px;margin-bottom:24px;color:#fff}
+
+/* Page header (archive / category / static) */
+.page-header{padding-top:140px;padding-bottom:40px}
+.page-header .eyebrow{color:$(primary);font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+.page-header h1{font-size:clamp(48px,7vw,96px);margin-top:8px;color:#fff}
+.page-header p{color:$(muted);max-width:640px;margin-top:12px;font-size:16px}
+
+/* Archive groups */
+.archive-year{display:flex;align-items:center;gap:16px;margin:32px 0 20px}
+.archive-year h2{font-size:56px;color:$(gold);font-family:'Bebas Neue',sans-serif;line-height:1}
+.archive-year .line{flex:1;height:1px;background:$(border)}
+.archive-year .count{font-size:12px;color:$(muted);text-transform:uppercase;letter-spacing:.2em}
+
+/* ================= FOOTER ================= */
+.site-footer{margin-top:80px;border-top:1px solid $(border);background:$(surface)}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:32px;padding:60px 0}
+@media(min-width:768px){.footer-grid{grid-template-columns:2fr 1fr 1fr 1fr}}
+.footer-brand p{color:$(muted);font-size:14px;margin:16px 0 20px;max-width:340px}
+.social-row{display:flex;gap:10px}
+.social-row a{width:40px;height:40px;border-radius:50%;border:1px solid $(border);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.social-row a:hover{background:$(primary);border-color:$(primary);color:#fff;transform:translateY(-3px)}
+.footer-col h5{font-size:13px;color:$(gold);letter-spacing:.25em;margin-bottom:20px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{color:$(muted);font-size:14px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid $(border);padding:20px 0;text-align:center;font-size:12px;color:$(muted);text-transform:uppercase;letter-spacing:.2em}
+
+/* Blogger admin panel visibility */
+body#layout .site-header, body#layout .site-footer{position:relative}
+body#layout .hero-section{min-height:auto;padding:60px 24px}
+body#layout .section{padding:24px}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeInUp .6s ease-out both}
+
+/* Responsive tweaks */
+@media(max-width:640px){
+  .hero-section{min-height:70vh}
+  .post-hero-poster{max-width:200px;margin:0 auto}
+}
+]]></b:skin>
+
+<b:template-skin><![CDATA[
+body{background:$(body.bg)}
+]]></b:template-skin>
+
 </head>
-<body class="bg-ink-950 text-white min-h-screen flex flex-col justify-between selection:bg-brand selection:text-white">
+<body>
 
-  <!-- CAMADA CORE: HEADER / NAVEGAÇÃO -->
-  <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-gradient-to-b from-black/90 to-transparent">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-6">
-      <a href="#home" class="flex items-center gap-2.5 group">
-        <span class="w-10 h-10 bg-brand grid place-items-center rounded-xl shadow-glow text-white group-hover:scale-105 transition"><i class="fa-solid fa-fire text-lg"></i></span>
-        <span class="font-display text-2xl tracking-wider uppercase">Callango <span class="text-brand">Nerd</span></span>
-      </a>
-      
-      <!-- Navegação Desktop -->
-      <nav class="hidden lg:flex items-center gap-1">
-        <a href="#home" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Início</a>
-        <a href="#movies" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Filmes</a>
-        <a href="#coming-soon" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Em Breve</a>
-        <a href="#reviews" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Críticas</a>
-        <a href="#gossip" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Notícias</a>
-        <a href="#archive" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Arquivo</a>
-      </nav>
+<!-- ============ HEADER ============ -->
+<header class='site-header' id='siteHeader'>
+  <div class='container header-inner'>
+    <a class='site-brand' expr:href='data:blog.homepageUrl'>
+      <i class='fa-solid fa-film'/>
+      <span>CINE<span class='dot'>STAR</span></span>
+    </a>
 
-      <!-- Barra de Pesquisa e Menu Mobile -->
-      <div class="flex items-center gap-3">
-        <div class="hidden md:flex items-center glass rounded-full px-4 py-2">
-          <i class="fa-solid fa-search text-white/40 text-sm"></i>
-          <input type="text" id="global-search" placeholder="Buscar posts..." class="bg-transparent outline-none text-sm ml-2.5 w-36 text-white placeholder:text-white/40"/>
-        </div>
-        <button id="mobile-menu-btn" class="lg:hidden glass rounded-full w-10 h-10 grid place-items-center text-white"><i class="fa-solid fa-bars"></i></button>
-      </div>
+    <nav class='main-nav'>
+      <a expr:href='data:blog.homepageUrl'>Início</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Filmes&quot;'>Filmes</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Em Breve&quot;'>Em Breve</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Críticas&quot;'>Críticas</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Fofocas&quot;'>Fofocas</a>
+      <a expr:href='data:blog.homepageUrl + &quot;p/arquivo.html&quot;'>Arquivo</a>
+    </nav>
+
+    <div class='header-tools'>
+      <button aria-label='Buscar' class='icon-btn' onclick='document.getElementById(&quot;searchOverlay&quot;).classList.add(&quot;open&quot;)'>
+        <i class='fa-solid fa-magnifying-glass'/>
+      </button>
+      <button aria-label='Menu' class='icon-btn menu-toggle' onclick='document.getElementById(&quot;mobileNav&quot;).classList.toggle(&quot;open&quot;)'>
+        <i class='fa-solid fa-bars'/>
+      </button>
     </div>
+  </div>
 
-    <!-- Menu Mobile Dropdown -->
-    <div id="mobile-menu" class="hidden lg:hidden glass border-t border-white/10 px-6 py-5 flex flex-col gap-3">
-      <div class="flex items-center glass rounded-full px-4 py-2.5 mb-2">
-        <i class="fa-solid fa-search text-white/40 text-sm"></i>
-        <input type="text" id="mobile-search" placeholder="Buscar..." class="bg-transparent outline-none text-sm ml-2.5 w-full text-white"/>
-      </div>
-      <a href="#home" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Início</a>
-      <a href="#movies" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Filmes</a>
-      <a href="#coming-soon" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Em Breve</a>
-      <a href="#reviews" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Críticas</a>
-      <a href="#gossip" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Notícias</a>
-      <a href="#archive" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Arquivo</a>
-    </div>
-  </header>
+  <div class='container'>
+    <nav class='mobile-nav' id='mobileNav'>
+      <a expr:href='data:blog.homepageUrl'>Início</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Filmes&quot;'>Filmes</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Em Breve&quot;'>Em Breve</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Críticas&quot;'>Críticas</a>
+      <a expr:href='data:blog.homepageUrl + &quot;search/label/Fofocas&quot;'>Fofocas</a>
+      <a expr:href='data:blog.homepageUrl + &quot;p/arquivo.html&quot;'>Arquivo</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- CONTEÚDO PRINCIPAL (RENDERIZADO DINAMICAMENTE POR VIEWS/LAYERS) -->
-  <main id="app-main" class="flex-1">
-    <!-- O conteúdo de cada página entra aqui via JS -->
-  </main>
+<!-- Search overlay -->
+<div class='search-overlay' id='searchOverlay'>
+  <button aria-label='Fechar' class='icon-btn close' onclick='this.parentNode.classList.remove(&quot;open&quot;)'>
+    <i class='fa-solid fa-xmark'/>
+  </button>
+  <form expr:action='data:blog.searchUrl' method='get'>
+    <input autocomplete='off' name='q' placeholder='Busque filmes, críticas, notícias...' type='text'/>
+  </form>
+</div>
 
-  <!-- CAMADA CORE: FOOTER -->
-  <footer class="mt-28 border-t border-white/5 bg-ink-900">
-    <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <span class="w-8 h-8 bg-brand grid place-items-center rounded-lg text-white"><i class="fa-solid fa-fire"></i></span>
-          <span class="font-display text-2xl uppercase">Callango Nerd</span>
+<!-- ============ HERO (featured — última postagem etiquetada &quot;Destaque&quot;) ============ -->
+<b:if cond='data:blog.pageType == &quot;index&quot;'>
+<section class='hero-section'>
+  <b:section class='hero-featured' id='hero-featured' maxwidgets='1' showaddelement='no'>
+    <b:widget id='HTML99' locked='true' title='Hero Featured' type='HTML' version='2'>
+      <b:includable id='main'>
+        <div class='hero-bg'>
+          <img alt='' src='https://picsum.photos/seed/cinestarbg/1920/1080'/>
         </div>
-        <p class="text-sm text-white/60 mt-3 leading-relaxed">Cinema, críticas e cultura pop com a autêntica alma nerd brasileira.</p>
-        <div class="flex gap-3 mt-5">
-          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
-          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-twitter text-sm"></i></a>
-          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-instagram text-sm"></i></a>
-          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-youtube text-sm"></i></a>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-display text-xl uppercase mb-4 text-brand">Navegação</h4>
-        <ul class="space-y-2.5 text-sm text-white/70">
-          <li><a href="#home" class="hover:text-brand transition">Início</a></li>
-          <li><a href="#movies" class="hover:text-brand transition">Filmes & Catálogo</a></li>
-          <li><a href="#coming-soon" class="hover:text-brand transition">Próximas Estreias</a></li>
-          <li><a href="#reviews" class="hover:text-brand transition">Críticas e Reviews</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-display text-xl uppercase mb-4 text-brand">Categorias</h4>
-        <ul id="footer-categories" class="space-y-2.5 text-sm text-white/70">
-          <!-- Injetado dinamicamente -->
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-display text-xl uppercase mb-4 text-brand">Newsletter</h4>
-        <p class="text-sm text-white/60 mb-3">Receba análises e novidades direto no seu e-mail.</p>
-        <form class="flex gap-2" onsubmit="event.preventDefault(); alert('Inscrição realizada com sucesso!');">
-          <input type="email" placeholder="seu@email.com" required class="flex-1 glass rounded-full px-4 py-2.5 text-sm outline-none text-white placeholder:text-white/40"/>
-          <button type="submit" class="bg-brand text-white font-semibold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider btn-glow cursor-pointer">OK</button>
-        </form>
-      </div>
-    </div>
-    <div class="border-t border-white/5 py-6 text-center text-xs text-white/40 uppercase tracking-widest">
-      © <span id="current-year"></span> Callango Nerd — Desenvolvido com Layout Avançado New Star Movies.
-    </div>
-  </footer>
-
-  <!-- CAMADA API E ROTEAMENTO INTELIGENTE -->
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-
-    // Base de Dados Real do Callango Nerd
-    const POSTS = [
-      {"id": "a-odisseia-nolan-acerta-no-epico-mas", "title": "A ODISSEIA | Nolan acerta no épico, mas peca no ritmo", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioIH6M8J3_q7O7dlb6FGD1r3n1bhQecHpJ9zil4Fog6T1KpLk48-thjzfysXimoHFxqsRsPrmgcma3jkY0egNbGEH98Az-XM0h0Ndyf3DhyphenhyphenjV_34qUp4tyrTLXHvaTd3KG01rqNd0flcfqk9_zq7F0gbFdLcRbBVffxdRnKf29qrcRHlVh8coQyJpIrwBk/s1600/A%20Odisseia.webp", "date": "2026-07-20", "author": "MODESK PRO", "summary": "Desde que Christopher Nolan anunciou que adaptaria A Odisseia, a expectativa se tornou inevitável. Afinal, estamos falando de um dos maiores diretores do cinema contemporâneo revisitando um dos pilares da literatura ocidental."},
-      {"id": "o-menu-imprevisivel-com-uma-atuacao", "title": "O MENU | Imprevisível com uma atuação magistral de Ralph Fiennes", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgYv40buq2whGt-D2TQR0zcdg-WBfeQM0AMJVmn7Qv0DdPRbj7aSwZAdjvSQwYV6FbWxR6XGaPloZMKlVyy3Owzsf8kiyinb-iWZnio_iiqhNBz1yoEMl3sm_-M8e2CowU4zekNtGjjPddO-FZBbzI4V3e-IiRV7Olk5Fo1zQHeJZEc4flKxnP_CTyECffg/s16000/O%20Menu.webp", "date": "2026-04-24", "author": "MODESK PRO", "summary": "Assisti ontem a O Menu, filme de 2022, e, meu irmão... que filme louco, mas no bom sentido. Fico imaginando o que rola na cabeça de um roteirista na hora de criar uma história dessa com alta gastronomia e suspense."},
-      {"id": "michael-entre-o-espetaculo-e-o-silencio", "title": "Michael: entre o espetáculo e o silêncio — um retrato seguro de um ícone imortal", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqgnkkgFhk_bZ_T6dPazGvfLHPljpWRzXxUEPQgLVpT3R6hOmHwzGHYpB7-vUQiQnmO34J2aTf-oje6aPbRitdiX4V7Jru6QsouY-Ve9g5qcf3YlO3UtGAV_pC9lkuEh8v_WXS3xvqvyRGT7RErEczy6MNAXKOnq2b2TPJZSRYWdLiVZzgITbRW4OtvTrF/s16000/Michael.webp", "date": "2026-04-16", "author": "Teacher James Drury", "summary": "Enfim, chega às telonas a tão esperada cinebiografia Michael, dirigida por Antoine Fuqua, com uma energia contagiante, como um espetáculo que já impacta logo nos primeiros minutos."},
-      {"id": "o-morro-dos-ventos-uivantes-2026-paixao", "title": "O Morro dos Ventos Uivantes (2026): Paixão, Obsessão e uma Releitura Ousada do Clássico.", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6XkTJJqVzU2gbeOkyI9QPQAJGgO-5xK-fkn11Du_bSDrJsPHrH_3MaYzHvwWgjGdhR7olaGhbiNo8T_8sT2r9VwdBl5nJv5LLR0-lIxtKS9-LQeZbMYej6HqlpCEG6-8Hx7eWjTcbk_kkhhWAjZs3q7OXd6YHBeSxbs2m66cS44ND2-2xpPDWs4b2Ya0A/s16000/%E2%80%9CWuthering%20Heights%E2%80%9D.webp", "date": "2026-02-07", "author": "Teacher James Drury", "summary": "A nova versão de O Morro dos Ventos Uivantes (2026), dirigida por Emerald Fennell, apresenta uma releitura autoral do clássico de Emily Brontë, assumindo um forte distanciamento das adaptações tradicionais."},
-      {"id": "truque-de-mestre-3-uma-completa-perda", "title": "Truque de Mestre 3 | Uma completa Perda de Tempo", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhn27mJXR4vjecmLiN8hn9SRi2UctdAJrv7_zmUJbI4M9Eym_eIVKuunQUKqYmEnkq7IlCHCRwQ_lg22YKwVRyfQFhfRWn1gglmOhVglrPotoa3SI89BmmYFJQ5JDY9INAOIYgD_CDUltGkdYFffv1yRgpY0bE5zyVnUOEWJPLDuQCkJ1A8JzfOhMGit4hr/s16000/Truque%20de%20Mestre%203.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Truque de Mestre 3 é aquele filme que faz a gente se perguntar seriamente: por que insistiram nisso? O primeiro funcionava por ser simples, ágil e inteligente dentro da proposta de ilusionismo."},
-      {"id": "o-desfecho-de-stranger-things-e-o-peso", "title": "O Desfecho de Stranger Things e o Peso das Conveniências do Roteiro", "cats": ["CRÍTICAS", "SÉRIES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj298frpLzMNDZInaYQYUe73DORHb0xksfQOurMRDKcZZm0J_tVG1vkBfDcnFIejcGp1DkfLoRKtTxD2z56qGn2CrP4MT0TwkkZJA32402PM8TcN8KgqNNwJuRRBSVVnv4ak_B_2aVdAVRp_eeuuYbsN8a_2eW3TSfG6Or6pvYwLjwVf6K5UBl9sxgwz0KN/s16000/Stranger%20Things.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Acabei de terminar o último episódio de Stranger Things com aquele sentimento misto de carinho com a sensação clara de que o roteiro pesou nas conveniências para fechar todas as pontas soltas."},
-      {"id": "pecadores-muito-alem-de-um-filme-de", "title": "Pecadores: Muito Além de um Filme de Vampiros", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhy0YMuYyL9ZJ8LTpzqUfGPXjNXLSNhqsQsEqerDzhma-LR2rpO2YDGIf9lQ9mBnGGsjfdUUzOSmVMqVnwi8svSu84Z0-E4EoNrLyDMjtWUYeryCbam_6mYVBbj_RwlLT0Ps-grl2QTiLcGcZv2N1vz3rrxAc1axoaBuZyrTYvj-h3pYn2VSA77Gi8nyUsK/s16000/SINNERS.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Depois de muita expectativa, finalmente assisti Pecadores. O filme me pegou de cara pela qualidade técnica impecável e principalmente pela forma como subverte o gênero de vampiros."},
-      {"id": "superman-empolga-no-visual-mas-tropeca", "title": "Superman empolga no visual, mas tropeça na trama fraca", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKpKSAIVVSFbwq9elHB_E4S1nr5wGhn0o2-t5vwq-NecXXl7jFdCueb948XB32iENOpMDcCBrKIMe66a7nSFniNUkHmuZbk511pupH1UFibgi8IAXqfRG8hMUaaM49arW9fWI6OB2G89QAk_TVkpBLT9NSmq_iZvsKCu81etkPdUtKsBk-kHgiqTqGw9Wm/s16000/Superman.jpg", "jpg": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKpKSAIVVSFbwq9elHB_E4S1nr5wGhn0o2-t5vwq-NecXXl7jFdCueb948XB32iENOpMDcCBrKIMe66a7nSFniNUkHmuZbk511pupH1UFibgi8IAXqfRG8hMUaaM49arW9fWI6OB2G89QAk_TVkpBLT9NSmq_iZvsKCu81etkPdUtKsBk-kHgiqTqGw9Wm/s16000/Superman.jpg", "date": "2025-07-08", "author": "MODESK PRO", "summary": "Assisti Superman, do James Gunn, numa cabine de imprensa. O filme não é ruim e tem um visual estonteante, mas tropeça em algumas conveniências de roteiro ao longo da jornada do herói."}
-    ];
-
-    // Funções utilitárias da API
-    const api = {
-      all: () => POSTS,
-      byId: id => POSTS.find(p => p.id === id),
-      byCategory: c => POSTS.filter(p => p.cats.map(x => x.toLowerCase()).includes(c.toLowerCase())),
-      reviews: () => POSTS.filter(p => p.cats.includes('CRÍTICAS')),
-      movies: () => POSTS.filter(p => p.cats.includes('FILMES') || p.cats.includes('CINEMA') || p.cats.includes('CRÍTICAS')),
-      categories: () => [...new Set(POSTS.flatMap(p => p.cats))],
-      rating: p => {
-        let h = 0; for(const c of p.id) h = (h * 31 + c.charCodeAt(0)) & 0xff;
-        return (6 + (h % 40) / 10).toFixed(1);
-      }
-    };
-
-    // Preencher categorias no rodapé
-    document.getElementById('footer-categories').innerHTML = api.categories().slice(0, 5).map(c => `<li><a href="#category-${c}" class="hover:text-brand transition">${c}</a></li>`).join('');
-
-    // Roteador Baseado em Hash (Views / Páginas)
-    function router() {
-      const hash = window.location.hash || '#home';
-      const main = document.getElementById('app-main');
-      window.scrollTo(0, 0);
-
-      // Fechar menu mobile se aberto
-      document.getElementById('mobile-menu').classList.add('hidden');
-
-      if (hash === '#home') {
-        renderHome(main);
-      } else if (hash === '#movies') {
-        renderMovies(main);
-      } else if (hash === '#coming-soon') {
-        renderComingSoon(main);
-      } else if (hash === '#reviews') {
-        renderReviews(main);
-      } else if (hash === '#gossip') {
-        renderGossip(main);
-      } else if (hash === '#archive') {
-        renderArchive(main);
-      } else if (hash.startsWith('#post/')) {
-        const id = hash.replace('#post/', '');
-        renderPost(main, id);
-      } else if (hash.startsWith('#category/')) {
-        const cat = decodeURIComponent(hash.replace('#category/', ''));
-        renderCategory(main, cat);
-      } else if (hash.startsWith('#search?q=')) {
-        const q = decodeURIComponent(hash.replace('#search?q=', ''));
-        renderSearch(main, q);
-      } else {
-        renderHome(main);
-      }
-    }
-
-    window.addEventListener('hashchange', router);
-    window.addEventListener('DOMContentLoaded', router);
-
-    // Pesquisa Global
-    document.getElementById('global-search').addEventListener('keypress', e => {
-      if(e.key === 'Enter' && e.target.value.trim()) {
-        window.location.hash = `#search?q=${encodeURIComponent(e.target.value.trim())}`;
-      }
-    });
-    document.getElementById('mobile-search').addEventListener('keypress', e => {
-      if(e.key === 'Enter' && e.target.value.trim()) {
-        window.location.hash = `#search?q=${encodeURIComponent(e.target.value.trim())}`;
-      }
-    });
-    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
-    });
-
-    // ================= VIEW: HOME (Início) =================
-    function renderHome(container) {
-      const featured = POSTS.slice(0, 4);
-      const movies = api.movies();
-      const reviews = api.reviews();
-
-      container.innerHTML = `
-        <!-- Hero Slider / Destaques -->
-        <div class="relative h-[85vh] min-h-[550px] overflow-hidden bg-ink-950">
-          <div id="hero-slider-container" class="absolute inset-0">
-            <!-- Injetado via JS abaixo -->
+        <div class='container'>
+          <div class='hero-content fade-in'>
+            <div class='hero-eyebrow'>Em Destaque</div>
+            <h1 class='hero-title text-glow'><a expr:href='data:blog.homepageUrl'>Uma nova era do cinema começa agora</a></h1>
+            <div class='hero-meta'>
+              <span><i class='fa-solid fa-star star'/> 8.9</span>
+              <span>2025</span>
+              <span>Aventura, Ficção</span>
+              <span><i class='fa-regular fa-clock'/> 2h 18min</span>
+            </div>
+            <p class='hero-excerpt'>Descubra os lançamentos mais aguardados, críticas afiadas e os bastidores mais quentes de Hollywood — tudo em um só lugar, com curadoria diária.</p>
+            <div class='hero-actions'>
+              <a class='btn primary' expr:href='data:blog.homepageUrl'><i class='fa-solid fa-play'/> Explorar</a>
+              <a class='btn ghost' expr:href='data:blog.homepageUrl + &quot;search/label/Filmes&quot;'>Ver Filmes</a>
+            </div>
           </div>
         </div>
+      </b:includable>
+    </b:widget>
+  </b:section>
+</section>
+</b:if>
 
-        <!-- Em Cartaz / Grid de Filmes -->
-        <div class="max-w-7xl mx-auto px-4 md:px-6 py-14">
-          <div class="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
-            <h2 class="font-display text-3xl md:text-4xl uppercase flex items-center gap-3">
-              <span class="inline-block w-1.5 h-8 bg-brand"></span>
-              <i class="fa-solid fa-fire text-brand text-2xl"></i> Em Cartaz & Lançamentos
-            </h2>
-            <a href="#movies" class="text-xs uppercase tracking-widest text-brand font-semibold hover:underline">Ver todos →</a>
-          </div>
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            ${movies.map(p => createMovieCard(p)).join('')}
-          </div>
+<!-- ============ MAIN BLOG WIDGET ============ -->
+<main>
+
+<b:if cond='data:blog.pageType == &quot;index&quot;'>
+  <section class='section'>
+    <div class='container'>
+      <div class='section-head'>
+        <div>
+          <div class='eyebrow'>Cinemas</div>
+          <h2>Últimos Posts</h2>
         </div>
+        <a class='more' expr:href='data:blog.homepageUrl'>Ver todos <i class='fa-solid fa-arrow-right'/></a>
+      </div>
+</b:if>
 
-        <!-- Críticas Recentes -->
-        <div class="max-w-7xl mx-auto px-4 md:px-6 py-10">
-          <div class="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
-            <h2 class="font-display text-3xl md:text-4xl uppercase flex items-center gap-3">
-              <span class="inline-block w-1.5 h-8 bg-brand"></span>
-              <i class="fa-solid fa-award text-brand text-2xl"></i> Críticas da Redação
-            </h2>
-            <a href="#reviews" class="text-xs uppercase tracking-widest text-brand font-semibold hover:underline">Ver todas →</a>
-          </div>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${reviews.map(p => createNewsCard(p)).join('')}
-          </div>
-        </div>
-      `;
+<b:if cond='data:blog.pageType != &quot;index&quot;'>
+  <b:if cond='data:blog.pageType != &quot;item&quot;'>
+    <section class='page-header'>
+      <div class='container'>
+        <div class='eyebrow'>Categoria / Arquivo</div>
+        <h1><data:blog.pageName/></h1>
+        <p>Publicações agrupadas por tema ou período — mantendo a identidade visual cinematográfica do portal.</p>
+      </div>
+    </section>
+    <section class='section'>
+      <div class='container'>
+  </b:if>
+</b:if>
 
-      // Inicializar Hero Slider interativo
-      let currentSlide = 0;
-      const heroContainer = document.getElementById('hero-slider-container');
-      
-      function showSlide(index) {
-        const p = featured[index];
-        const rating = api.rating(p);
-        heroContainer.innerHTML = `
-          <div class="absolute inset-0 animate-fade">
-            <img src="${p.img}" class="w-full h-full object-cover filter brightness-90"/>
-            <div class="absolute inset-0 grad-hero"></div>
-            <div class="absolute inset-0 grad-side"></div>
-            <div class="relative z-10 max-w-7xl mx-auto px-6 h-full flex items-end pb-24">
-              <div class="max-w-3xl">
-                <div class="flex gap-2 mb-4">${p.cats.map(c => `<span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${c}</span>`).join('')}</div>
-                <h1 class="font-display text-4xl md:text-6xl uppercase leading-tight">${p.title}</h1>
-                <div class="flex flex-wrap gap-5 text-sm text-white/80 mt-4">
-                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-brand"></i> ${rating}</span>
-                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
-                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-user"></i> ${p.author}</span>
-                </div>
-                <p class="text-white/80 mt-4 text-base line-clamp-3 max-w-2xl">${p.summary}</p>
-                <div class="flex gap-3 mt-6">
-                  <a href="#post/${p.id}" class="bg-brand text-white px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider btn-glow inline-flex items-center gap-2"><i class="fa-solid fa-play text-xs"></i> Ler Análise</a>
-                </div>
+<b:section class='main-blog' id='main' showaddelement='no'>
+  <b:widget id='Blog1' locked='true' title='Posts do Blog' type='Blog' version='2'>
+    <b:includable id='main'>
+
+      <!-- ============ INDEX / LABEL / ARCHIVE — GRID DE CARDS ============ -->
+      <b:if cond='data:blog.pageType != &quot;item&quot;'>
+        <b:if cond='data:blog.pageType != &quot;static_page&quot;'>
+          <div class='post-grid'>
+            <b:loop values='data:posts' var='post'>
+              <b:include data='post' name='movieCard'/>
+            </b:loop>
+          </div>
+
+          <!-- Paginação -->
+          <div style='display:flex;justify-content:space-between;margin-top:48px;gap:16px;flex-wrap:wrap'>
+            <b:if cond='data:newerPageUrl'>
+              <a class='btn ghost' expr:href='data:newerPageUrl'><i class='fa-solid fa-arrow-left'/> Mais recentes</a>
+              <b:else/>
+              <span/>
+            </b:if>
+            <b:if cond='data:olderPageUrl'>
+              <a class='btn primary' expr:href='data:olderPageUrl'>Mais antigos <i class='fa-solid fa-arrow-right'/></a>
+            </b:if>
+          </div>
+        </b:if>
+      </b:if>
+
+      <!-- ============ SINGLE POST — LAYOUT IMERSIVO ============ -->
+      <b:if cond='data:blog.pageType == &quot;item&quot;'>
+        <b:loop values='data:posts' var='post'>
+          <b:include data='post' name='singlePost'/>
+        </b:loop>
+      </b:if>
+
+      <!-- ============ STATIC PAGE ============ -->
+      <b:if cond='data:blog.pageType == &quot;static_page&quot;'>
+        <b:loop values='data:posts' var='post'>
+          <article class='page-header'>
+            <div class='container'>
+              <div class='eyebrow'>Página</div>
+              <h1><data:post.title/></h1>
+            </div>
+          </article>
+          <section class='section'>
+            <div class='container'>
+              <div class='content'><data:post.body/></div>
+            </div>
+          </section>
+        </b:loop>
+      </b:if>
+
+    </b:includable>
+
+    <!-- ============ MOVIE / POST CARD (usado no grid) ============ -->
+    <b:includable id='movieCard' var='post'>
+      <article class='movie-card'>
+        <a expr:href='data:post.url'>
+          <div class='thumb'>
+            <b:if cond='data:post.thumbnailUrl'>
+              <img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 500, &quot;2:3&quot;)'/>
+              <b:else/>
+              <img expr:alt='data:post.title' src='https://picsum.photos/seed/cinestar/500/750'/>
+            </b:if>
+            <b:if cond='data:post.labels'>
+              <b:loop index='li' values='data:post.labels' var='label'>
+                <b:if cond='data:li == 0'>
+                  <span class='badge accent badge-top-left'><data:label.name/></span>
+                </b:if>
+              </b:loop>
+            </b:if>
+            <div class='play-overlay'><span class='play-btn'><i class='fa-solid fa-play'/></span></div>
+            <div class='info'>
+              <h3><data:post.title/></h3>
+              <div class='meta'>
+                <b:if cond='data:post.dateHeader'>
+                  <span><data:post.timestamp/></span>
+                </b:if>
               </div>
             </div>
           </div>
-        `;
-      }
-      showSlide(currentSlide);
-      setInterval(() => {
-        currentSlide = (currentSlide + 1) % featured.length;
-        showSlide(currentSlide);
-      }, 6000);
-    }
+        </a>
+      </article>
+    </b:includable>
 
-    // ================= VIEW: MOVIES (Filmes & Catálogo) =================
-    function renderMovies(container) {
-      const list = api.movies();
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Catálogo Completo</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Filmes & <span class="text-brand">Cinema</span></h1>
-          <p class="text-white/60 mt-2">Explore todos os títulos e análises cinematográficas publicadas.</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20">
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            ${list.map(p => createMovieCard(p)).join('')}
+    <!-- ============ SINGLE POST ============ -->
+    <b:includable id='singlePost' var='post'>
+      <article>
+        <!-- Hero do post -->
+        <div class='post-hero'>
+          <div class='post-hero-bg'>
+            <b:if cond='data:post.thumbnailUrl'>
+              <img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 1920, &quot;16:9&quot;)'/>
+              <b:else/>
+              <img expr:alt='data:post.title' src='https://picsum.photos/seed/cinestar/1920/1080'/>
+            </b:if>
           </div>
-        </div>
-      `;
-    }
-
-    // ================= VIEW: COMING SOON (Em Breve) =================
-    function renderComingSoon(container) {
-      const upcoming = POSTS.slice(0, 4).map((p, i) => ({ ...p, releaseDate: `2026-09-${10 + i * 5}` }));
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Próximas Estreias</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Em <span class="text-brand">Breve</span> nos Cinemas</h1>
-          <p class="text-white/60 mt-2">Prepare-se para os grandes blockbusters e lançamentos aguardados.</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20 space-y-6">
-          ${upcoming.map(m => `
-            <div class="glass rounded-2xl overflow-hidden grid md:grid-cols-[280px_1fr] shadow-xl">
-              <img src="${m.img}" alt="${m.title}" class="w-full h-full object-cover aspect-[2/3] md:aspect-auto bg-ink-800"/>
-              <div class="p-8 flex flex-col justify-between">
-                <div>
-                  <span class="bg-black/60 text-white border border-white/10 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Estreia: ${m.releaseDate}</span>
-                  <h2 class="font-display text-3xl md:text-4xl uppercase mt-4 line-clamp-2">${m.title}</h2>
-                  <p class="text-white/70 mt-3 text-base line-clamp-3">${m.summary}</p>
+          <div class='container'>
+            <div class='post-hero-content'>
+              <b:if cond='data:post.thumbnailUrl'>
+                <div class='post-hero-poster'>
+                  <img expr:alt='data:post.title' expr:src='resizeImage(data:post.thumbnailUrl, 400, &quot;2:3&quot;)'/>
                 </div>
-                <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center justify-between">
-                  <div class="flex gap-2">
-                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">35</div><div class="text-[9px] uppercase tracking-widest text-white/60">dias</div></div>
-                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">12</div><div class="text-[9px] uppercase tracking-widest text-white/60">hrs</div></div>
-                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">45</div><div class="text-[9px] uppercase tracking-widest text-white/60">min</div></div>
-                  </div>
-                  <a href="#post/${m.id}" class="bg-brand text-white px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider btn-glow inline-flex items-center gap-2"><i class="fa-solid fa-info-circle text-xs"></i> Ver Prévia</a>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    // ================= VIEW: REVIEWS (Críticas) =================
-    function renderReviews(container) {
-      const rs = api.reviews();
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Avaliações</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Críticas & <span class="text-brand">Reviews</span></h1>
-          <p class="text-white/60 mt-2">Nossas análises aprofundadas com notas oficiais da redação.</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20 grid md:grid-cols-2 gap-6">
-          ${rs.map(p => {
-            const score = api.rating(p);
-            return `
-              <a href="#post/${p.id}" class="glass rounded-2xl overflow-hidden group flex flex-col hover:border-brand/40 transition">
-                <div class="relative aspect-[16/8] overflow-hidden hover-zoom bg-ink-800">
-                  <img src="${p.img}" class="w-full h-full object-cover"/>
-                  <div class="absolute inset-0 grad-hero"></div>
-                  <div class="absolute bottom-3 left-3"><span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
-                </div>
-                <div class="p-6 flex gap-5 items-center flex-1">
-                  <div class="w-16 h-16 rounded-full grid place-items-center ring-2 ring-brand text-brand glass font-display text-2xl shrink-0">${score}</div>
-                  <div>
-                    <h3 class="font-display text-2xl uppercase group-hover:text-brand transition line-clamp-2">${p.title}</h3>
-                    <p class="text-sm text-white/70 mt-1.5 line-clamp-2">${p.summary}</p>
-                    <div class="text-[11px] text-white/50 mt-3 uppercase tracking-widest">por ${p.author} · ${p.date}</div>
-                  </div>
-                </div>
-              </a>
-            `;
-          }).join('')}
-        </div>
-      `;
-    }
-
-    // ================= VIEW: GOSSIP (Notícias) =================
-    function renderGossip(container) {
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Portal Pop</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Notícias & <span class="text-brand">Fofocas</span></h1>
-          <p class="text-white/60 mt-2">Bastidores, novidades e os principais acontecimentos do mundo pop.</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20 grid lg:grid-cols-[1fr_320px] gap-10">
-          <div>
-            <div class="grid md:grid-cols-2 gap-6">
-              ${POSTS.map(p => createNewsCard(p)).join('')}
-            </div>
-          </div>
-          <aside class="space-y-6">
-            <div class="glass rounded-2xl p-6">
-              <h4 class="font-display text-xl uppercase mb-4 text-brand flex items-center gap-2"><i class="fa-solid fa-tags text-sm"></i> Categorias</h4>
-              <div class="flex flex-wrap gap-2">
-                ${api.categories().map(c => `<a href="#category/${c}" class="text-[10px] uppercase tracking-widest px-3.5 py-2 rounded-full glass hover:text-brand transition">${c}</a>`).join('')}
-              </div>
-            </div>
-            <div class="glass rounded-2xl p-6">
-              <h4 class="font-display text-xl uppercase mb-4 text-brand flex items-center gap-2"><i class="fa-solid fa-chart-line text-sm"></i> Mais Lidos</h4>
-              <ol class="space-y-4">
-                ${POSTS.slice(0, 5).map((n, i) => `
-                  <li><a href="#post/${n.id}" class="flex gap-4 group items-center">
-                    <span class="font-display text-3xl text-brand/70">0${i+1}</span>
-                    <span class="text-sm group-hover:text-brand transition line-clamp-2 font-medium">${n.title}</span>
-                  </a></li>
-                `).join('')}
-              </ol>
-            </div>
-          </aside>
-        </div>
-      `;
-    }
-
-    // ================= VIEW: POST INDIVIDUAL =================
-    function renderPost(container, id) {
-      const p = api.byId(id) || POSTS[0];
-      const rating = api.rating(p);
-      const isReview = p.cats.includes('CRÍTICAS');
-
-      container.innerHTML = `
-        <article class="pt-20">
-          <div class="relative h-[70vh] min-h-[450px] bg-ink-950">
-            <img src="${p.img}" class="absolute inset-0 w-full h-full object-cover filter brightness-90"/>
-            <div class="absolute inset-0 grad-hero"></div>
-            <div class="relative z-10 max-w-5xl mx-auto px-6 h-full flex items-end pb-16">
+              </b:if>
               <div>
-                <div class="flex gap-2 mb-4">${p.cats.map(c => `<span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${c}</span>`).join('')}</div>
-                <h1 class="font-display text-4xl md:text-6xl uppercase leading-tight max-w-4xl">${p.title}</h1>
-                <div class="flex flex-wrap items-center gap-5 text-sm text-white/80 mt-5">
-                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-user"></i> ${p.author}</span>
-                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
-                  ${isReview ? `<span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-brand"></i> ${rating}/10</span>` : ''}
+                <b:if cond='data:post.labels'>
+                  <b:loop index='li' values='data:post.labels' var='label'>
+                    <b:if cond='data:li == 0'>
+                      <span class='badge accent'><data:label.name/></span>
+                    </b:if>
+                  </b:loop>
+                </b:if>
+                <h1 class='post-hero-title text-glow'><data:post.title/></h1>
+                <div class='post-hero-meta'>
+                  <span><i class='fa-regular fa-user'/> <data:post.author/></span>
+                  <span><i class='fa-regular fa-calendar'/> <data:post.timestamp/></span>
+                  <b:if cond='data:post.numberOfComments'>
+                    <span><i class='fa-regular fa-comment'/> <data:post.numberOfComments/> comentários</span>
+                  </b:if>
+                </div>
+                <div class='hero-actions'>
+                  <a class='btn primary' href='#post-body'><i class='fa-solid fa-play'/> Ler artigo</a>
+                  <a class='btn ghost' href='#comments'><i class='fa-regular fa-comment'/> Comentar</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="max-w-5xl mx-auto px-6 py-14 grid lg:grid-cols-[1fr_280px] gap-10">
-            <div>
-              <p class="text-xl text-white/90 leading-relaxed font-normal">${p.summary}</p>
-              <div class="glass rounded-2xl p-8 my-8 border-l-4 border-l-brand">
-                <p class="text-white/80 italic text-base">"Esta obra redefine o padrão do gênero, trazendo escolhas estéticas e narrativas que geram intensos debates entre os fãs e críticos de cinema."</p>
-              </div>
-              <p class="text-white/70 leading-relaxed text-base">
-                O desenvolvimento técnico e a profundidade dramática apresentada demonstram o porquê de produções como esta conquistarem tanto destaque no cenário atual. A direção consegue extrair o máximo do elenco em sequências marcantes.
-              </p>
-              
-              ${isReview ? `
-                <div class="mt-10 glass rounded-2xl p-6 flex items-center gap-6">
-                  <div class="w-16 h-16 rounded-full grid place-items-center ring-2 ring-brand text-brand glass font-display text-2xl shrink-0">${rating}</div>
+        </div>
+
+        <!-- Corpo -->
+        <div class='post-body' id='post-body'>
+          <div class='container'>
+            <div class='two-col'>
+              <div>
+                <div class='content'><data:post.body/></div>
+
+                <!-- Tags -->
+                <b:if cond='data:post.labels'>
+                  <div class='share-bar'>
+                    <span><i class='fa-solid fa-tags'/> Tags:</span>
+                    <b:loop values='data:post.labels' var='label'>
+                      <a class='chip' expr:href='data:label.url'><data:label.name/></a>
+                    </b:loop>
+                  </div>
+                </b:if>
+
+                <!-- Compartilhamento -->
+                <div class='share-bar'>
+                  <span><i class='fa-solid fa-share-nodes'/> Compartilhar:</span>
+                  <a class='share-btn' expr:href='&quot;https://www.facebook.com/sharer/sharer.php?u=&quot; + data:post.url' target='_blank' title='Facebook'><i class='fa-brands fa-facebook-f'/></a>
+                  <a class='share-btn' expr:href='&quot;https://twitter.com/intent/tweet?url=&quot; + data:post.url + &quot;&amp;text=&quot; + data:post.title' target='_blank' title='Twitter'><i class='fa-brands fa-x-twitter'/></a>
+                  <a class='share-btn' expr:href='&quot;https://api.whatsapp.com/send?text=&quot; + data:post.title + &quot; &quot; + data:post.url' target='_blank' title='WhatsApp'><i class='fa-brands fa-whatsapp'/></a>
+                  <a class='share-btn' expr:href='&quot;https://www.linkedin.com/shareArticle?url=&quot; + data:post.url' target='_blank' title='LinkedIn'><i class='fa-brands fa-linkedin-in'/></a>
+                </div>
+
+                <!-- Autor -->
+                <div class='author-card'>
+                  <div class='avatar'>
+                    <b:if cond='data:post.authorPhoto.url'>
+                      <img expr:alt='data:post.author' expr:src='data:post.authorPhoto.url'/>
+                      <b:else/>
+                      <data:post.author/>
+                    </b:if>
+                  </div>
                   <div>
-                    <div class="font-display text-2xl uppercase">Nota Oficial da Redação</div>
-                    <div class="text-sm text-white/60 mt-1">Pontuação atribuída com base em critérios técnicos, roteiro, direção e impacto cultural.</div>
+                    <div class='role'>Escrito por</div>
+                    <div class='name'><data:post.author/></div>
+                    <div class='role'>Colunista CINESTAR</div>
                   </div>
                 </div>
-              ` : ''}
 
-              <!-- Área de Comentários Simulados -->
-              <div class="mt-12">
-                <h3 class="font-display text-2xl uppercase mb-6 flex items-center gap-2"><i class="fa-regular fa-comments text-brand"></i> Comentários</h3>
-                <div class="glass rounded-xl p-4 flex gap-3 mb-6">
-                  <input type="text" placeholder="Deixe sua opinião..." class="flex-1 bg-transparent outline-none text-sm placeholder:text-white/40 text-white"/>
-                  <button class="bg-brand text-white px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider btn-glow cursor-pointer">Publicar</button>
-                </div>
-                <div class="space-y-4">
-                  <div class="glass rounded-xl p-4">
-                    <div class="flex items-center gap-2 text-sm"><span class="font-semibold text-brand">CinéfiloBR</span><span class="text-white/40 text-xs">há 2h</span></div>
-                    <p class="text-white/80 text-sm mt-1">Análise impecável! Concordo plenamente com os pontos levantados sobre a direção.</p>
-                  </div>
+                <!-- Comentários nativos do Blogger -->
+                <div class='comments-section' id='comments'>
+                  <b:include data='post' name='comment_picker'/>
                 </div>
               </div>
-            </div>
-            <aside class="space-y-6">
-              <div class="glass rounded-2xl p-6">
-                <h4 class="font-display text-xl uppercase mb-4 text-brand">Redator</h4>
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 rounded-full bg-brand grid place-items-center font-display text-xl uppercase shadow-glow text-white">${p.author[0]}</div>
-                  <div><div class="font-semibold text-base">${p.author}</div><div class="text-xs text-white/50 uppercase tracking-widest">Colunista Oficial</div></div>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </article>
-      `;
-    }
 
-    // ================= VIEW: ARCHIVE (Arquivo) =================
-    function renderArchive(container) {
-      container.innerHTML = `
-        <div class="pt-32 max-w-5xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Histórico</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Arquivo <span class="text-brand">Geral</span></h1>
-          <p class="text-white/60 mt-2">Todas as publicações organizadas por período.</p>
-        </div>
-        <div class="max-w-5xl mx-auto px-6 pb-20 space-y-6">
-          <div class="glass rounded-2xl p-8">
-            <h3 class="font-display text-2xl text-brand uppercase mb-5">Julho / 2026</h3>
-            <ul class="divide-y divide-white/5">
-              ${POSTS.map(n => `
-                <li class="py-4 flex items-center justify-between gap-6">
-                  <a href="#post/${n.id}" class="hover:text-brand transition font-medium line-clamp-1">${n.title}</a>
-                  <span class="text-xs text-white/40 shrink-0 uppercase tracking-widest">${n.date}</span>
-                </li>
-              `).join('')}
-            </ul>
+              <!-- Sidebar -->
+              <aside class='sidebar-widgets'>
+                <b:section class='post-sidebar' id='post-sidebar' showaddelement='yes'>
+                  <b:widget id='PopularPosts1' locked='false' title='Mais lidos' type='PopularPosts' version='2' visible='true'>
+                    <b:includable id='main'>
+                      <div class='widget'>
+                        <h4 class='widget-title'>Mais Lidos</h4>
+                        <b:loop values='data:posts' var='post'>
+                          <a expr:href='data:post.href' style='display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border,#2a2320)'>
+                            <b:if cond='data:post.featuredImage.isYouTube == &quot;false&quot;'>
+                              <img expr:alt='data:post.title' expr:src='data:post.featuredImage' style='width:72px;height:72px;object-fit:cover;border-radius:2px;flex-shrink:0'/>
+                            </b:if>
+                            <div style='font-size:13px;line-height:1.4;color:#fff'><data:post.title/></div>
+                          </a>
+                        </b:loop>
+                      </div>
+                    </b:includable>
+                  </b:widget>
+                  <b:widget id='Label1' locked='false' title='Categorias' type='Label' version='2' visible='true'>
+                    <b:includable id='main'>
+                      <div class='widget'>
+                        <h4 class='widget-title'>Categorias</h4>
+                        <div class='chip-row'>
+                          <b:loop values='data:labels' var='label'>
+                            <a class='chip' expr:href='data:label.url'><data:label.name/></a>
+                          </b:loop>
+                        </div>
+                      </div>
+                    </b:includable>
+                  </b:widget>
+                  <b:widget id='BlogArchive1' locked='false' title='Arquivo' type='BlogArchive' version='2' visible='true'>
+                    <b:includable id='main'>
+                      <div class='widget'>
+                        <h4 class='widget-title'>Arquivo</h4>
+                        <b:include name='flat'/>
+                      </div>
+                    </b:includable>
+                  </b:widget>
+                </b:section>
+              </aside>
+            </div>
           </div>
         </div>
-      `;
-    }
+      </article>
+    </b:includable>
 
-    // ================= VIEW: CATEGORY =================
-    function renderCategory(container, catName) {
-      const list = api.byCategory(catName);
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Categoria</span>
-          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">${catName}</h1>
-          <p class="text-white/60 mt-2">${list.length} publicação(ões) encontrada(s) nesta categoria.</p>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20">
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            ${list.map(p => createMovieCard(p)).join('')}
-          </div>
-        </div>
-      `;
-    }
+  </b:widget>
+</b:section>
 
-    // ================= VIEW: SEARCH =================
-    function renderSearch(container, q) {
-      const query = q.toLowerCase();
-      const list = POSTS.filter(p => p.title.toLowerCase().includes(query) || p.summary.toLowerCase().includes(query));
-      container.innerHTML = `
-        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
-          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Busca</span>
-          <h1 class="font-display text-5xl md:text-6xl uppercase mt-3">Resultados para "<span class="text-brand">${q}</span>"</h1>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 pb-20">
-          ${list.length === 0 ? '<p class="text-white/50 text-center py-20">Nenhum resultado correspondente à sua busca.</p>' : `
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-              ${list.map(p => createMovieCard(p)).join('')}
-            </div>
-          `}
-        </div>
-      `;
-    }
+<b:if cond='data:blog.pageType != &quot;index&quot;'>
+  <b:if cond='data:blog.pageType != &quot;item&quot;'>
+      </div>
+    </section>
+  </b:if>
+</b:if>
 
-    // ================= COMPONENTES REUTILIZÁVEIS =================
-    function createMovieCard(p) {
-      const rating = api.rating(p);
-      return `
-        <div onclick="window.location.hash='#post/${p.id}'" class="group cursor-pointer">
-          <div class="relative overflow-hidden rounded-xl hover-zoom ring-1 ring-white/5 bg-ink-800 aspect-[2/3] shadow-lg">
-            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover"/>
-            <div class="absolute inset-0 grad-hero opacity-95"></div>
-            <div class="absolute top-2.5 left-2.5"><span class="bg-brand text-white px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
-            <div class="absolute top-2.5 right-2.5 glass px-2 py-0.5 rounded text-xs flex items-center gap-1 font-semibold">
-              <i class="fa-solid fa-star text-brand text-[10px]"></i>${rating}
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 p-3.5">
-              <h3 class="font-display text-base md:text-lg uppercase leading-tight group-hover:text-brand transition line-clamp-2">${p.title}</h3>
-              <div class="text-[11px] text-white/60 mt-1">${p.date}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
+<b:if cond='data:blog.pageType == &quot;index&quot;'>
+    </div>
+  </section>
 
-    function createNewsCard(p) {
-      return `
-        <article onclick="window.location.hash='#post/${p.id}'" class="group cursor-pointer glass rounded-2xl overflow-hidden flex flex-col h-full hover:border-brand/40 transition">
-          <div class="relative overflow-hidden hover-zoom aspect-[16/10] bg-ink-800">
-            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover"/>
-            <div class="absolute top-3 left-3"><span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
-          </div>
-          <div class="p-5 flex flex-col flex-1 justify-between">
-            <div>
-              <h3 class="font-display text-xl uppercase leading-tight group-hover:text-brand transition line-clamp-2">${p.title}</h3>
-              <p class="text-sm text-white/60 mt-2 line-clamp-2">${p.summary}</p>
+  <!-- Bloco extra: Últimas fofocas via widget FeaturedPost ou HTML personalizado -->
+  <section class='section alt'>
+    <div class='container'>
+      <div class='section-head'>
+        <div>
+          <div class='eyebrow'>Bastidores</div>
+          <h2>Notícias &amp; Fofocas</h2>
+        </div>
+        <a class='more' expr:href='data:blog.homepageUrl + &quot;search/label/Fofocas&quot;'>Ver todas <i class='fa-solid fa-arrow-right'/></a>
+      </div>
+      <b:section class='home-gossip' id='home-gossip' maxwidgets='1' showaddelement='yes'>
+        <b:widget id='FeaturedPost1' locked='false' title='Fofocas em destaque' type='FeaturedPost' version='2' visible='true'>
+          <b:includable id='main'>
+            <div class='gossip-grid'>
+              <b:loop values='data:posts' var='post'>
+                <article class='gossip-card'>
+                  <a expr:href='data:post.url'>
+                    <div class='thumb'>
+                      <b:if cond='data:post.featuredImage'>
+                        <img expr:alt='data:post.title' expr:src='data:post.featuredImage'/>
+                      </b:if>
+                      <b:if cond='data:post.labels'>
+                        <b:loop index='li' values='data:post.labels' var='label'>
+                          <b:if cond='data:li == 0'>
+                            <span class='badge accent badge-top-left'><data:label.name/></span>
+                          </b:if>
+                        </b:loop>
+                      </b:if>
+                    </div>
+                    <div class='body'>
+                      <h3><data:post.title/></h3>
+                      <div class='excerpt'><data:post.snippet/></div>
+                      <div class='meta-row'>
+                        <span><i class='fa-regular fa-user'/><data:post.author/></span>
+                        <span><i class='fa-regular fa-calendar'/><data:post.timestamp/></span>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              </b:loop>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-3 border-t border-white/5 text-[11px] text-white/50 uppercase tracking-wider">
-              <span class="flex items-center gap-1"><i class="fa-regular fa-user"></i> ${p.author}</span>
-              <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
+          </b:includable>
+        </b:widget>
+      </b:section>
+    </div>
+  </section>
+</b:if>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class='site-footer'>
+  <div class='container'>
+    <div class='footer-grid'>
+      <div class='footer-brand'>
+        <a class='site-brand' expr:href='data:blog.homepageUrl'>
+          <i class='fa-solid fa-film'/>
+          <span>CINE<span class='dot'>STAR</span></span>
+        </a>
+        <p>Portal cinematográfico com trailers, críticas, notícias e fofocas do universo do cinema.</p>
+        <div class='social-row'>
+          <a href='#' title='Facebook'><i class='fa-brands fa-facebook-f'/></a>
+          <a href='#' title='Twitter'><i class='fa-brands fa-x-twitter'/></a>
+          <a href='#' title='Instagram'><i class='fa-brands fa-instagram'/></a>
+          <a href='#' title='YouTube'><i class='fa-brands fa-youtube'/></a>
+        </div>
+      </div>
+
+      <b:section class='footer-col-1' id='footer-col-1' maxwidgets='1' showaddelement='yes'>
+        <b:widget id='LinkList1' locked='false' title='Explorar' type='LinkList' version='2' visible='true'>
+          <b:includable id='main'>
+            <div class='footer-col'>
+              <h5><data:title/></h5>
+              <ul>
+                <b:loop values='data:links' var='link'>
+                  <li><a expr:href='data:link.target'><data:link.name/></a></li>
+                </b:loop>
+              </ul>
             </div>
-          </div>
-        </article>
-      `;
-    }
-  </script>
+          </b:includable>
+        </b:widget>
+      </b:section>
+
+      <b:section class='footer-col-2' id='footer-col-2' maxwidgets='1' showaddelement='yes'>
+        <b:widget id='Label2' locked='false' title='Categorias' type='Label' version='2' visible='true'>
+          <b:includable id='main'>
+            <div class='footer-col'>
+              <h5>Categorias</h5>
+              <ul>
+                <b:loop values='data:labels' var='label'>
+                  <li><a expr:href='data:label.url'><data:label.name/></a></li>
+                </b:loop>
+              </ul>
+            </div>
+          </b:includable>
+        </b:widget>
+      </b:section>
+
+      <b:section class='footer-col-3' id='footer-col-3' maxwidgets='1' showaddelement='yes'>
+        <b:widget id='LinkList2' locked='false' title='Sobre' type='LinkList' version='2' visible='true'>
+          <b:includable id='main'>
+            <div class='footer-col'>
+              <h5><data:title/></h5>
+              <ul>
+                <b:loop values='data:links' var='link'>
+                  <li><a expr:href='data:link.target'><data:link.name/></a></li>
+                </b:loop>
+              </ul>
+            </div>
+          </b:includable>
+        </b:widget>
+      </b:section>
+    </div>
+
+    <div class='footer-bottom'>
+      © <script>document.write(new Date().getFullYear())</script> CINESTAR — Template Blogger cinematográfico.
+    </div>
+  </div>
+</footer>
+
+<script><![CDATA[
+// Header scroll
+(function(){
+  var h=document.getElementById('siteHeader');
+  if(!h)return;
+  var onScroll=function(){h.classList.toggle('scrolled',window.scrollY>20)};
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+})();
+
+// Lazy-load para imagens do post.body
+document.querySelectorAll('.content img').forEach(function(img){img.setAttribute('loading','lazy')});
+
+// Countdown genérico: qualquer elemento com data-countdown="YYYY-MM-DDTHH:mm:ss"
+function initCountdowns(){
+  document.querySelectorAll('[data-countdown]').forEach(function(el){
+    var target=new Date(el.getAttribute('data-countdown')).getTime();
+    var tick=function(){
+      var diff=target-Date.now();
+      if(diff<=0){el.innerHTML='<div class="box"><div class="num">🎬</div><div class="lbl">Estreou</div></div>';return}
+      var d=Math.floor(diff/864e5),h=Math.floor(diff/36e5)%24,m=Math.floor(diff/6e4)%60,s=Math.floor(diff/1e3)%60;
+      el.innerHTML=[['DIAS',d],['HRS',h],['MIN',m],['SEG',s]].map(function(p){
+        return '<div class="box"><div class="num">'+String(p[1]).padStart(2,'0')+'</div><div class="lbl">'+p[0]+'</div></div>';
+      }).join('');
+    };
+    tick();setInterval(tick,1000);
+  });
+}
+initCountdowns();
+]]></script>
+
 </body>
 </html>
