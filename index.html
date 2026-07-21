@@ -1,36 +1,616 @@
-<style>
-  /* Remove margens padrão do Blogger para o iframe ocupar tudo */
-  body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  .omega-return-btn{display:none}
-  .modesk-wrapper {
-    position: fixed; /* Fixa na tela */
-    top: 0;
-    left: 0;
-    width: 100vw; /* 100% da largura da tela */
-    height: 100vh; /* 100% da altura da tela */
-    z-index: 9999; /* Garante que fique acima de tudo */
-    background: #f4f6f9;
-  }
+<!doctype html>
+<html lang="pt-br" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Callango Nerd — Cinema, Críticas & Cultura Pop</title>
+  <meta name="description" content="Notícias, críticas e análises de filmes, séries e cultura pop."/>
+  
+  <!-- Fontes & Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#ff0000',
+            ink: { 950: '#060d17', 900: '#0a121d', 800: '#0c131e', 700: '#111a27', 600: '#182233' },
+          },
+          fontFamily: {
+            sans: ['Outfit', 'system-ui', 'sans-serif'],
+            display: ['Anton', 'Outfit', 'sans-serif']
+          },
+          boxShadow: {
+            glow: '0 0 40px -10px rgba(255,0,0,.55)',
+          }
+        }
+      }
+    }
+  </script>
 
-  .modesk-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-  }
-</style>
+  <!-- Estilos Avançados (Camada UI / Glassmorphism) -->
+  <style>
+    html, body { background: #060d17; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 300; overflow-x: hidden; scroll-behavior: smooth; }
+    .font-display { font-family: 'Anton', sans-serif; letter-spacing: .02em; }
+    .glass { background: rgba(12, 19, 30, 0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .grad-hero { background: linear-gradient(180deg, rgba(6,13,23,0) 0%, rgba(6,13,23,0.6) 55%, rgba(6,13,23,1) 100%); }
+    .grad-side { background: linear-gradient(90deg, rgba(6,13,23,0.95) 0%, rgba(6,13,23,0.5) 55%, rgba(6,13,23,0) 100%); }
+    .hover-zoom img { transition: transform .6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .hover-zoom:hover img { transform: scale(1.08); }
+    .btn-glow { transition: all .3s ease; }
+    .btn-glow:hover { box-shadow: 0 10px 30px -8px rgba(255,0,0,0.6); transform: translateY(-2px); }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #060d17; }
+    ::-webkit-scrollbar-thumb { background: #182233; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff0000; }
+  </style>
+</head>
+<body class="bg-ink-950 text-white min-h-screen flex flex-col justify-between selection:bg-brand selection:text-white">
 
-<div class="modesk-wrapper">
-  <iframe
-    src="https://callangonerd-dev.github.io/callangonerd/"
-    title="Callango Nerd"
-    allow="clipboard-read; clipboard-write; storage-access; fullscreen; cross-origin-isolated"
-    referrerpolicy="no-referrer-when-downgrade">
-  </iframe>
-</div>
+  <!-- CAMADA CORE: HEADER / NAVEGAÇÃO -->
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-gradient-to-b from-black/90 to-transparent">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-6">
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <span class="w-10 h-10 bg-brand grid place-items-center rounded-xl shadow-glow text-white group-hover:scale-105 transition"><i class="fa-solid fa-fire text-lg"></i></span>
+        <span class="font-display text-2xl tracking-wider uppercase">Callango <span class="text-brand">Nerd</span></span>
+      </a>
+      
+      <!-- Navegação Desktop -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="#home" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Início</a>
+        <a href="#movies" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Filmes</a>
+        <a href="#coming-soon" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Em Breve</a>
+        <a href="#reviews" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Críticas</a>
+        <a href="#gossip" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Notícias</a>
+        <a href="#archive" class="nav-link px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:text-white hover:bg-white/5 transition">Arquivo</a>
+      </nav>
+
+      <!-- Barra de Pesquisa e Menu Mobile -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center glass rounded-full px-4 py-2">
+          <i class="fa-solid fa-search text-white/40 text-sm"></i>
+          <input type="text" id="global-search" placeholder="Buscar posts..." class="bg-transparent outline-none text-sm ml-2.5 w-36 text-white placeholder:text-white/40"/>
+        </div>
+        <button id="mobile-menu-btn" class="lg:hidden glass rounded-full w-10 h-10 grid place-items-center text-white"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+
+    <!-- Menu Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden lg:hidden glass border-t border-white/10 px-6 py-5 flex flex-col gap-3">
+      <div class="flex items-center glass rounded-full px-4 py-2.5 mb-2">
+        <i class="fa-solid fa-search text-white/40 text-sm"></i>
+        <input type="text" id="mobile-search" placeholder="Buscar..." class="bg-transparent outline-none text-sm ml-2.5 w-full text-white"/>
+      </div>
+      <a href="#home" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Início</a>
+      <a href="#movies" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Filmes</a>
+      <a href="#coming-soon" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Em Breve</a>
+      <a href="#reviews" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Críticas</a>
+      <a href="#gossip" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Notícias</a>
+      <a href="#archive" class="mobile-nav-link py-2.5 text-sm font-semibold uppercase text-white/80 hover:text-brand">Arquivo</a>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (RENDERIZADO DINAMICAMENTE POR VIEWS/LAYERS) -->
+  <main id="app-main" class="flex-1">
+    <!-- O conteúdo de cada página entra aqui via JS -->
+  </main>
+
+  <!-- CAMADA CORE: FOOTER -->
+  <footer class="mt-28 border-t border-white/5 bg-ink-900">
+    <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 bg-brand grid place-items-center rounded-lg text-white"><i class="fa-solid fa-fire"></i></span>
+          <span class="font-display text-2xl uppercase">Callango Nerd</span>
+        </div>
+        <p class="text-sm text-white/60 mt-3 leading-relaxed">Cinema, críticas e cultura pop com a autêntica alma nerd brasileira.</p>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-twitter text-sm"></i></a>
+          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-instagram text-sm"></i></a>
+          <a href="#" class="glass w-9 h-9 rounded-full grid place-items-center hover:text-brand transition"><i class="fa-brands fa-youtube text-sm"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display text-xl uppercase mb-4 text-brand">Navegação</h4>
+        <ul class="space-y-2.5 text-sm text-white/70">
+          <li><a href="#home" class="hover:text-brand transition">Início</a></li>
+          <li><a href="#movies" class="hover:text-brand transition">Filmes & Catálogo</a></li>
+          <li><a href="#coming-soon" class="hover:text-brand transition">Próximas Estreias</a></li>
+          <li><a href="#reviews" class="hover:text-brand transition">Críticas e Reviews</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-display text-xl uppercase mb-4 text-brand">Categorias</h4>
+        <ul id="footer-categories" class="space-y-2.5 text-sm text-white/70">
+          <!-- Injetado dinamicamente -->
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-display text-xl uppercase mb-4 text-brand">Newsletter</h4>
+        <p class="text-sm text-white/60 mb-3">Receba análises e novidades direto no seu e-mail.</p>
+        <form class="flex gap-2" onsubmit="event.preventDefault(); alert('Inscrição realizada com sucesso!');">
+          <input type="email" placeholder="seu@email.com" required class="flex-1 glass rounded-full px-4 py-2.5 text-sm outline-none text-white placeholder:text-white/40"/>
+          <button type="submit" class="bg-brand text-white font-semibold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider btn-glow cursor-pointer">OK</button>
+        </form>
+      </div>
+    </div>
+    <div class="border-t border-white/5 py-6 text-center text-xs text-white/40 uppercase tracking-widest">
+      © <span id="current-year"></span> Callango Nerd — Desenvolvido com Layout Avançado New Star Movies.
+    </div>
+  </footer>
+
+  <!-- CAMADA API E ROTEAMENTO INTELIGENTE -->
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Base de Dados Real do Callango Nerd
+    const POSTS = [
+      {"id": "a-odisseia-nolan-acerta-no-epico-mas", "title": "A ODISSEIA | Nolan acerta no épico, mas peca no ritmo", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioIH6M8J3_q7O7dlb6FGD1r3n1bhQecHpJ9zil4Fog6T1KpLk48-thjzfysXimoHFxqsRsPrmgcma3jkY0egNbGEH98Az-XM0h0Ndyf3DhyphenhyphenjV_34qUp4tyrTLXHvaTd3KG01rqNd0flcfqk9_zq7F0gbFdLcRbBVffxdRnKf29qrcRHlVh8coQyJpIrwBk/s1600/A%20Odisseia.webp", "date": "2026-07-20", "author": "MODESK PRO", "summary": "Desde que Christopher Nolan anunciou que adaptaria A Odisseia, a expectativa se tornou inevitável. Afinal, estamos falando de um dos maiores diretores do cinema contemporâneo revisitando um dos pilares da literatura ocidental."},
+      {"id": "o-menu-imprevisivel-com-uma-atuacao", "title": "O MENU | Imprevisível com uma atuação magistral de Ralph Fiennes", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgYv40buq2whGt-D2TQR0zcdg-WBfeQM0AMJVmn7Qv0DdPRbj7aSwZAdjvSQwYV6FbWxR6XGaPloZMKlVyy3Owzsf8kiyinb-iWZnio_iiqhNBz1yoEMl3sm_-M8e2CowU4zekNtGjjPddO-FZBbzI4V3e-IiRV7Olk5Fo1zQHeJZEc4flKxnP_CTyECffg/s16000/O%20Menu.webp", "date": "2026-04-24", "author": "MODESK PRO", "summary": "Assisti ontem a O Menu, filme de 2022, e, meu irmão... que filme louco, mas no bom sentido. Fico imaginando o que rola na cabeça de um roteirista na hora de criar uma história dessa com alta gastronomia e suspense."},
+      {"id": "michael-entre-o-espetaculo-e-o-silencio", "title": "Michael: entre o espetáculo e o silêncio — um retrato seguro de um ícone imortal", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqgnkkgFhk_bZ_T6dPazGvfLHPljpWRzXxUEPQgLVpT3R6hOmHwzGHYpB7-vUQiQnmO34J2aTf-oje6aPbRitdiX4V7Jru6QsouY-Ve9g5qcf3YlO3UtGAV_pC9lkuEh8v_WXS3xvqvyRGT7RErEczy6MNAXKOnq2b2TPJZSRYWdLiVZzgITbRW4OtvTrF/s16000/Michael.webp", "date": "2026-04-16", "author": "Teacher James Drury", "summary": "Enfim, chega às telonas a tão esperada cinebiografia Michael, dirigida por Antoine Fuqua, com uma energia contagiante, como um espetáculo que já impacta logo nos primeiros minutos."},
+      {"id": "o-morro-dos-ventos-uivantes-2026-paixao", "title": "O Morro dos Ventos Uivantes (2026): Paixão, Obsessão e uma Releitura Ousada do Clássico.", "cats": ["CINEMA", "CRÍTICAS"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6XkTJJqVzU2gbeOkyI9QPQAJGgO-5xK-fkn11Du_bSDrJsPHrH_3MaYzHvwWgjGdhR7olaGhbiNo8T_8sT2r9VwdBl5nJv5LLR0-lIxtKS9-LQeZbMYej6HqlpCEG6-8Hx7eWjTcbk_kkhhWAjZs3q7OXd6YHBeSxbs2m66cS44ND2-2xpPDWs4b2Ya0A/s16000/%E2%80%9CWuthering%20Heights%E2%80%9D.webp", "date": "2026-02-07", "author": "Teacher James Drury", "summary": "A nova versão de O Morro dos Ventos Uivantes (2026), dirigida por Emerald Fennell, apresenta uma releitura autoral do clássico de Emily Brontë, assumindo um forte distanciamento das adaptações tradicionais."},
+      {"id": "truque-de-mestre-3-uma-completa-perda", "title": "Truque de Mestre 3 | Uma completa Perda de Tempo", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhn27mJXR4vjecmLiN8hn9SRi2UctdAJrv7_zmUJbI4M9Eym_eIVKuunQUKqYmEnkq7IlCHCRwQ_lg22YKwVRyfQFhfRWn1gglmOhVglrPotoa3SI89BmmYFJQ5JDY9INAOIYgD_CDUltGkdYFffv1yRgpY0bE5zyVnUOEWJPLDuQCkJ1A8JzfOhMGit4hr/s16000/Truque%20de%20Mestre%203.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Truque de Mestre 3 é aquele filme que faz a gente se perguntar seriamente: por que insistiram nisso? O primeiro funcionava por ser simples, ágil e inteligente dentro da proposta de ilusionismo."},
+      {"id": "o-desfecho-de-stranger-things-e-o-peso", "title": "O Desfecho de Stranger Things e o Peso das Conveniências do Roteiro", "cats": ["CRÍTICAS", "SÉRIES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj298frpLzMNDZInaYQYUe73DORHb0xksfQOurMRDKcZZm0J_tVG1vkBfDcnFIejcGp1DkfLoRKtTxD2z56qGn2CrP4MT0TwkkZJA32402PM8TcN8KgqNNwJuRRBSVVnv4ak_B_2aVdAVRp_eeuuYbsN8a_2eW3TSfG6Or6pvYwLjwVf6K5UBl9sxgwz0KN/s16000/Stranger%20Things.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Acabei de terminar o último episódio de Stranger Things com aquele sentimento misto de carinho com a sensação clara de que o roteiro pesou nas conveniências para fechar todas as pontas soltas."},
+      {"id": "pecadores-muito-alem-de-um-filme-de", "title": "Pecadores: Muito Além de um Filme de Vampiros", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhy0YMuYyL9ZJ8LTpzqUfGPXjNXLSNhqsQsEqerDzhma-LR2rpO2YDGIf9lQ9mBnGGsjfdUUzOSmVMqVnwi8svSu84Z0-E4EoNrLyDMjtWUYeryCbam_6mYVBbj_RwlLT0Ps-grl2QTiLcGcZv2N1vz3rrxAc1axoaBuZyrTYvj-h3pYn2VSA77Gi8nyUsK/s16000/SINNERS.webp", "date": "2026-01-27", "author": "MODESK PRO", "summary": "Depois de muita expectativa, finalmente assisti Pecadores. O filme me pegou de cara pela qualidade técnica impecável e principalmente pela forma como subverte o gênero de vampiros."},
+      {"id": "superman-empolga-no-visual-mas-tropeca", "title": "Superman empolga no visual, mas tropeça na trama fraca", "cats": ["CINEMA", "CRÍTICAS", "FILMES"], "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKpKSAIVVSFbwq9elHB_E4S1nr5wGhn0o2-t5vwq-NecXXl7jFdCueb948XB32iENOpMDcCBrKIMe66a7nSFniNUkHmuZbk511pupH1UFibgi8IAXqfRG8hMUaaM49arW9fWI6OB2G89QAk_TVkpBLT9NSmq_iZvsKCu81etkPdUtKsBk-kHgiqTqGw9Wm/s16000/Superman.jpg", "jpg": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKpKSAIVVSFbwq9elHB_E4S1nr5wGhn0o2-t5vwq-NecXXl7jFdCueb948XB32iENOpMDcCBrKIMe66a7nSFniNUkHmuZbk511pupH1UFibgi8IAXqfRG8hMUaaM49arW9fWI6OB2G89QAk_TVkpBLT9NSmq_iZvsKCu81etkPdUtKsBk-kHgiqTqGw9Wm/s16000/Superman.jpg", "date": "2025-07-08", "author": "MODESK PRO", "summary": "Assisti Superman, do James Gunn, numa cabine de imprensa. O filme não é ruim e tem um visual estonteante, mas tropeça em algumas conveniências de roteiro ao longo da jornada do herói."}
+    ];
+
+    // Funções utilitárias da API
+    const api = {
+      all: () => POSTS,
+      byId: id => POSTS.find(p => p.id === id),
+      byCategory: c => POSTS.filter(p => p.cats.map(x => x.toLowerCase()).includes(c.toLowerCase())),
+      reviews: () => POSTS.filter(p => p.cats.includes('CRÍTICAS')),
+      movies: () => POSTS.filter(p => p.cats.includes('FILMES') || p.cats.includes('CINEMA') || p.cats.includes('CRÍTICAS')),
+      categories: () => [...new Set(POSTS.flatMap(p => p.cats))],
+      rating: p => {
+        let h = 0; for(const c of p.id) h = (h * 31 + c.charCodeAt(0)) & 0xff;
+        return (6 + (h % 40) / 10).toFixed(1);
+      }
+    };
+
+    // Preencher categorias no rodapé
+    document.getElementById('footer-categories').innerHTML = api.categories().slice(0, 5).map(c => `<li><a href="#category-${c}" class="hover:text-brand transition">${c}</a></li>`).join('');
+
+    // Roteador Baseado em Hash (Views / Páginas)
+    function router() {
+      const hash = window.location.hash || '#home';
+      const main = document.getElementById('app-main');
+      window.scrollTo(0, 0);
+
+      // Fechar menu mobile se aberto
+      document.getElementById('mobile-menu').classList.add('hidden');
+
+      if (hash === '#home') {
+        renderHome(main);
+      } else if (hash === '#movies') {
+        renderMovies(main);
+      } else if (hash === '#coming-soon') {
+        renderComingSoon(main);
+      } else if (hash === '#reviews') {
+        renderReviews(main);
+      } else if (hash === '#gossip') {
+        renderGossip(main);
+      } else if (hash === '#archive') {
+        renderArchive(main);
+      } else if (hash.startsWith('#post/')) {
+        const id = hash.replace('#post/', '');
+        renderPost(main, id);
+      } else if (hash.startsWith('#category/')) {
+        const cat = decodeURIComponent(hash.replace('#category/', ''));
+        renderCategory(main, cat);
+      } else if (hash.startsWith('#search?q=')) {
+        const q = decodeURIComponent(hash.replace('#search?q=', ''));
+        renderSearch(main, q);
+      } else {
+        renderHome(main);
+      }
+    }
+
+    window.addEventListener('hashchange', router);
+    window.addEventListener('DOMContentLoaded', router);
+
+    // Pesquisa Global
+    document.getElementById('global-search').addEventListener('keypress', e => {
+      if(e.key === 'Enter' && e.target.value.trim()) {
+        window.location.hash = `#search?q=${encodeURIComponent(e.target.value.trim())}`;
+      }
+    });
+    document.getElementById('mobile-search').addEventListener('keypress', e => {
+      if(e.key === 'Enter' && e.target.value.trim()) {
+        window.location.hash = `#search?q=${encodeURIComponent(e.target.value.trim())}`;
+      }
+    });
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // ================= VIEW: HOME (Início) =================
+    function renderHome(container) {
+      const featured = POSTS.slice(0, 4);
+      const movies = api.movies();
+      const reviews = api.reviews();
+
+      container.innerHTML = `
+        <!-- Hero Slider / Destaques -->
+        <div class="relative h-[85vh] min-h-[550px] overflow-hidden bg-ink-950">
+          <div id="hero-slider-container" class="absolute inset-0">
+            <!-- Injetado via JS abaixo -->
+          </div>
+        </div>
+
+        <!-- Em Cartaz / Grid de Filmes -->
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-14">
+          <div class="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
+            <h2 class="font-display text-3xl md:text-4xl uppercase flex items-center gap-3">
+              <span class="inline-block w-1.5 h-8 bg-brand"></span>
+              <i class="fa-solid fa-fire text-brand text-2xl"></i> Em Cartaz & Lançamentos
+            </h2>
+            <a href="#movies" class="text-xs uppercase tracking-widest text-brand font-semibold hover:underline">Ver todos →</a>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+            ${movies.map(p => createMovieCard(p)).join('')}
+          </div>
+        </div>
+
+        <!-- Críticas Recentes -->
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-10">
+          <div class="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
+            <h2 class="font-display text-3xl md:text-4xl uppercase flex items-center gap-3">
+              <span class="inline-block w-1.5 h-8 bg-brand"></span>
+              <i class="fa-solid fa-award text-brand text-2xl"></i> Críticas da Redação
+            </h2>
+            <a href="#reviews" class="text-xs uppercase tracking-widest text-brand font-semibold hover:underline">Ver todas →</a>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${reviews.map(p => createNewsCard(p)).join('')}
+          </div>
+        </div>
+      `;
+
+      // Inicializar Hero Slider interativo
+      let currentSlide = 0;
+      const heroContainer = document.getElementById('hero-slider-container');
+      
+      function showSlide(index) {
+        const p = featured[index];
+        const rating = api.rating(p);
+        heroContainer.innerHTML = `
+          <div class="absolute inset-0 animate-fade">
+            <img src="${p.img}" class="w-full h-full object-cover filter brightness-90"/>
+            <div class="absolute inset-0 grad-hero"></div>
+            <div class="absolute inset-0 grad-side"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-6 h-full flex items-end pb-24">
+              <div class="max-w-3xl">
+                <div class="flex gap-2 mb-4">${p.cats.map(c => `<span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${c}</span>`).join('')}</div>
+                <h1 class="font-display text-4xl md:text-6xl uppercase leading-tight">${p.title}</h1>
+                <div class="flex flex-wrap gap-5 text-sm text-white/80 mt-4">
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-brand"></i> ${rating}</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-user"></i> ${p.author}</span>
+                </div>
+                <p class="text-white/80 mt-4 text-base line-clamp-3 max-w-2xl">${p.summary}</p>
+                <div class="flex gap-3 mt-6">
+                  <a href="#post/${p.id}" class="bg-brand text-white px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider btn-glow inline-flex items-center gap-2"><i class="fa-solid fa-play text-xs"></i> Ler Análise</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      showSlide(currentSlide);
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % featured.length;
+        showSlide(currentSlide);
+      }, 6000);
+    }
+
+    // ================= VIEW: MOVIES (Filmes & Catálogo) =================
+    function renderMovies(container) {
+      const list = api.movies();
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Catálogo Completo</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Filmes & <span class="text-brand">Cinema</span></h1>
+          <p class="text-white/60 mt-2">Explore todos os títulos e análises cinematográficas publicadas.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20">
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+            ${list.map(p => createMovieCard(p)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= VIEW: COMING SOON (Em Breve) =================
+    function renderComingSoon(container) {
+      const upcoming = POSTS.slice(0, 4).map((p, i) => ({ ...p, releaseDate: `2026-09-${10 + i * 5}` }));
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Próximas Estreias</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Em <span class="text-brand">Breve</span> nos Cinemas</h1>
+          <p class="text-white/60 mt-2">Prepare-se para os grandes blockbusters e lançamentos aguardados.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20 space-y-6">
+          ${upcoming.map(m => `
+            <div class="glass rounded-2xl overflow-hidden grid md:grid-cols-[280px_1fr] shadow-xl">
+              <img src="${m.img}" alt="${m.title}" class="w-full h-full object-cover aspect-[2/3] md:aspect-auto bg-ink-800"/>
+              <div class="p-8 flex flex-col justify-between">
+                <div>
+                  <span class="bg-black/60 text-white border border-white/10 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">Estreia: ${m.releaseDate}</span>
+                  <h2 class="font-display text-3xl md:text-4xl uppercase mt-4 line-clamp-2">${m.title}</h2>
+                  <p class="text-white/70 mt-3 text-base line-clamp-3">${m.summary}</p>
+                </div>
+                <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center justify-between">
+                  <div class="flex gap-2">
+                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">35</div><div class="text-[9px] uppercase tracking-widest text-white/60">dias</div></div>
+                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">12</div><div class="text-[9px] uppercase tracking-widest text-white/60">hrs</div></div>
+                    <div class="glass px-3 py-2 rounded text-center min-w-[60px]"><div class="font-display text-xl text-brand">45</div><div class="text-[9px] uppercase tracking-widest text-white/60">min</div></div>
+                  </div>
+                  <a href="#post/${m.id}" class="bg-brand text-white px-6 py-3 rounded-full font-semibold text-sm uppercase tracking-wider btn-glow inline-flex items-center gap-2"><i class="fa-solid fa-info-circle text-xs"></i> Ver Prévia</a>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // ================= VIEW: REVIEWS (Críticas) =================
+    function renderReviews(container) {
+      const rs = api.reviews();
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Avaliações</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Críticas & <span class="text-brand">Reviews</span></h1>
+          <p class="text-white/60 mt-2">Nossas análises aprofundadas com notas oficiais da redação.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20 grid md:grid-cols-2 gap-6">
+          ${rs.map(p => {
+            const score = api.rating(p);
+            return `
+              <a href="#post/${p.id}" class="glass rounded-2xl overflow-hidden group flex flex-col hover:border-brand/40 transition">
+                <div class="relative aspect-[16/8] overflow-hidden hover-zoom bg-ink-800">
+                  <img src="${p.img}" class="w-full h-full object-cover"/>
+                  <div class="absolute inset-0 grad-hero"></div>
+                  <div class="absolute bottom-3 left-3"><span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
+                </div>
+                <div class="p-6 flex gap-5 items-center flex-1">
+                  <div class="w-16 h-16 rounded-full grid place-items-center ring-2 ring-brand text-brand glass font-display text-2xl shrink-0">${score}</div>
+                  <div>
+                    <h3 class="font-display text-2xl uppercase group-hover:text-brand transition line-clamp-2">${p.title}</h3>
+                    <p class="text-sm text-white/70 mt-1.5 line-clamp-2">${p.summary}</p>
+                    <div class="text-[11px] text-white/50 mt-3 uppercase tracking-widest">por ${p.author} · ${p.date}</div>
+                  </div>
+                </div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // ================= VIEW: GOSSIP (Notícias) =================
+    function renderGossip(container) {
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Portal Pop</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Notícias & <span class="text-brand">Fofocas</span></h1>
+          <p class="text-white/60 mt-2">Bastidores, novidades e os principais acontecimentos do mundo pop.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20 grid lg:grid-cols-[1fr_320px] gap-10">
+          <div>
+            <div class="grid md:grid-cols-2 gap-6">
+              ${POSTS.map(p => createNewsCard(p)).join('')}
+            </div>
+          </div>
+          <aside class="space-y-6">
+            <div class="glass rounded-2xl p-6">
+              <h4 class="font-display text-xl uppercase mb-4 text-brand flex items-center gap-2"><i class="fa-solid fa-tags text-sm"></i> Categorias</h4>
+              <div class="flex flex-wrap gap-2">
+                ${api.categories().map(c => `<a href="#category/${c}" class="text-[10px] uppercase tracking-widest px-3.5 py-2 rounded-full glass hover:text-brand transition">${c}</a>`).join('')}
+              </div>
+            </div>
+            <div class="glass rounded-2xl p-6">
+              <h4 class="font-display text-xl uppercase mb-4 text-brand flex items-center gap-2"><i class="fa-solid fa-chart-line text-sm"></i> Mais Lidos</h4>
+              <ol class="space-y-4">
+                ${POSTS.slice(0, 5).map((n, i) => `
+                  <li><a href="#post/${n.id}" class="flex gap-4 group items-center">
+                    <span class="font-display text-3xl text-brand/70">0${i+1}</span>
+                    <span class="text-sm group-hover:text-brand transition line-clamp-2 font-medium">${n.title}</span>
+                  </a></li>
+                `).join('')}
+              </ol>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    // ================= VIEW: POST INDIVIDUAL =================
+    function renderPost(container, id) {
+      const p = api.byId(id) || POSTS[0];
+      const rating = api.rating(p);
+      const isReview = p.cats.includes('CRÍTICAS');
+
+      container.innerHTML = `
+        <article class="pt-20">
+          <div class="relative h-[70vh] min-h-[450px] bg-ink-950">
+            <img src="${p.img}" class="absolute inset-0 w-full h-full object-cover filter brightness-90"/>
+            <div class="absolute inset-0 grad-hero"></div>
+            <div class="relative z-10 max-w-5xl mx-auto px-6 h-full flex items-end pb-16">
+              <div>
+                <div class="flex gap-2 mb-4">${p.cats.map(c => `<span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${c}</span>`).join('')}</div>
+                <h1 class="font-display text-4xl md:text-6xl uppercase leading-tight max-w-4xl">${p.title}</h1>
+                <div class="flex flex-wrap items-center gap-5 text-sm text-white/80 mt-5">
+                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-user"></i> ${p.author}</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
+                  ${isReview ? `<span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-brand"></i> ${rating}/10</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="max-w-5xl mx-auto px-6 py-14 grid lg:grid-cols-[1fr_280px] gap-10">
+            <div>
+              <p class="text-xl text-white/90 leading-relaxed font-normal">${p.summary}</p>
+              <div class="glass rounded-2xl p-8 my-8 border-l-4 border-l-brand">
+                <p class="text-white/80 italic text-base">"Esta obra redefine o padrão do gênero, trazendo escolhas estéticas e narrativas que geram intensos debates entre os fãs e críticos de cinema."</p>
+              </div>
+              <p class="text-white/70 leading-relaxed text-base">
+                O desenvolvimento técnico e a profundidade dramática apresentada demonstram o porquê de produções como esta conquistarem tanto destaque no cenário atual. A direção consegue extrair o máximo do elenco em sequências marcantes.
+              </p>
+              
+              ${isReview ? `
+                <div class="mt-10 glass rounded-2xl p-6 flex items-center gap-6">
+                  <div class="w-16 h-16 rounded-full grid place-items-center ring-2 ring-brand text-brand glass font-display text-2xl shrink-0">${rating}</div>
+                  <div>
+                    <div class="font-display text-2xl uppercase">Nota Oficial da Redação</div>
+                    <div class="text-sm text-white/60 mt-1">Pontuação atribuída com base em critérios técnicos, roteiro, direção e impacto cultural.</div>
+                  </div>
+                </div>
+              ` : ''}
+
+              <!-- Área de Comentários Simulados -->
+              <div class="mt-12">
+                <h3 class="font-display text-2xl uppercase mb-6 flex items-center gap-2"><i class="fa-regular fa-comments text-brand"></i> Comentários</h3>
+                <div class="glass rounded-xl p-4 flex gap-3 mb-6">
+                  <input type="text" placeholder="Deixe sua opinião..." class="flex-1 bg-transparent outline-none text-sm placeholder:text-white/40 text-white"/>
+                  <button class="bg-brand text-white px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider btn-glow cursor-pointer">Publicar</button>
+                </div>
+                <div class="space-y-4">
+                  <div class="glass rounded-xl p-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="font-semibold text-brand">CinéfiloBR</span><span class="text-white/40 text-xs">há 2h</span></div>
+                    <p class="text-white/80 text-sm mt-1">Análise impecável! Concordo plenamente com os pontos levantados sobre a direção.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <aside class="space-y-6">
+              <div class="glass rounded-2xl p-6">
+                <h4 class="font-display text-xl uppercase mb-4 text-brand">Redator</h4>
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-full bg-brand grid place-items-center font-display text-xl uppercase shadow-glow text-white">${p.author[0]}</div>
+                  <div><div class="font-semibold text-base">${p.author}</div><div class="text-xs text-white/50 uppercase tracking-widest">Colunista Oficial</div></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </article>
+      `;
+    }
+
+    // ================= VIEW: ARCHIVE (Arquivo) =================
+    function renderArchive(container) {
+      container.innerHTML = `
+        <div class="pt-32 max-w-5xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Histórico</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">Arquivo <span class="text-brand">Geral</span></h1>
+          <p class="text-white/60 mt-2">Todas as publicações organizadas por período.</p>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 pb-20 space-y-6">
+          <div class="glass rounded-2xl p-8">
+            <h3 class="font-display text-2xl text-brand uppercase mb-5">Julho / 2026</h3>
+            <ul class="divide-y divide-white/5">
+              ${POSTS.map(n => `
+                <li class="py-4 flex items-center justify-between gap-6">
+                  <a href="#post/${n.id}" class="hover:text-brand transition font-medium line-clamp-1">${n.title}</a>
+                  <span class="text-xs text-white/40 shrink-0 uppercase tracking-widest">${n.date}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= VIEW: CATEGORY =================
+    function renderCategory(container, catName) {
+      const list = api.byCategory(catName);
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Categoria</span>
+          <h1 class="font-display text-5xl md:text-7xl uppercase mt-3">${catName}</h1>
+          <p class="text-white/60 mt-2">${list.length} publicação(ões) encontrada(s) nesta categoria.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20">
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+            ${list.map(p => createMovieCard(p)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ================= VIEW: SEARCH =================
+    function renderSearch(container, q) {
+      const query = q.toLowerCase();
+      const list = POSTS.filter(p => p.title.toLowerCase().includes(query) || p.summary.toLowerCase().includes(query));
+      container.innerHTML = `
+        <div class="pt-32 max-w-7xl mx-auto px-6 mb-8">
+          <span class="bg-brand text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">Busca</span>
+          <h1 class="font-display text-5xl md:text-6xl uppercase mt-3">Resultados para "<span class="text-brand">${q}</span>"</h1>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pb-20">
+          ${list.length === 0 ? '<p class="text-white/50 text-center py-20">Nenhum resultado correspondente à sua busca.</p>' : `
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+              ${list.map(p => createMovieCard(p)).join('')}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    // ================= COMPONENTES REUTILIZÁVEIS =================
+    function createMovieCard(p) {
+      const rating = api.rating(p);
+      return `
+        <div onclick="window.location.hash='#post/${p.id}'" class="group cursor-pointer">
+          <div class="relative overflow-hidden rounded-xl hover-zoom ring-1 ring-white/5 bg-ink-800 aspect-[2/3] shadow-lg">
+            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 grad-hero opacity-95"></div>
+            <div class="absolute top-2.5 left-2.5"><span class="bg-brand text-white px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
+            <div class="absolute top-2.5 right-2.5 glass px-2 py-0.5 rounded text-xs flex items-center gap-1 font-semibold">
+              <i class="fa-solid fa-star text-brand text-[10px]"></i>${rating}
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-3.5">
+              <h3 class="font-display text-base md:text-lg uppercase leading-tight group-hover:text-brand transition line-clamp-2">${p.title}</h3>
+              <div class="text-[11px] text-white/60 mt-1">${p.date}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function createNewsCard(p) {
+      return `
+        <article onclick="window.location.hash='#post/${p.id}'" class="group cursor-pointer glass rounded-2xl overflow-hidden flex flex-col h-full hover:border-brand/40 transition">
+          <div class="relative overflow-hidden hover-zoom aspect-[16/10] bg-ink-800">
+            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover"/>
+            <div class="absolute top-3 left-3"><span class="bg-brand text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest">${p.cats[0]}</span></div>
+          </div>
+          <div class="p-5 flex flex-col flex-1 justify-between">
+            <div>
+              <h3 class="font-display text-xl uppercase leading-tight group-hover:text-brand transition line-clamp-2">${p.title}</h3>
+              <p class="text-sm text-white/60 mt-2 line-clamp-2">${p.summary}</p>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-3 border-t border-white/5 text-[11px] text-white/50 uppercase tracking-wider">
+              <span class="flex items-center gap-1"><i class="fa-regular fa-user"></i> ${p.author}</span>
+              <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${p.date}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+  </script>
+</body>
+</html>
