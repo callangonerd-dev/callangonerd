@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Callango Nerd CMS — Painel Administrativo v12</title>
+<title>Callango Nerd CMS — Painel Administrativo v13</title>
 <style>
 :root{
   --bg:#ffffff; --surface:#ffffff; --surface2:#f5f7fa; --line:#dfe3e8;
@@ -173,6 +173,7 @@ input[type=checkbox]{width:auto}
         <button data-view="blogsettings">Preferências do site</button>
         <button data-view="extras">Recursos avançados</button>
         <button data-view="backend">Backend &amp; Regras</button>
+        <button data-view="github">GitHub &amp; Pages</button>
         <button onclick="viewBlog()" style="color:var(--brand);font-weight:700;letter-spacing:.4px">VER SITE</button>
       </nav>
       <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
@@ -1049,6 +1050,64 @@ body{font-family:"Google Sans","Product Sans",system-ui,Segoe UI,Roboto,sans-ser
 </section>
 
 <!-- ===== BACKEND &amp; REGRAS ===== -->
+
+<!-- ===== GITHUB & PAGES (v13) ===== -->
+<section id="v_github" class="hidden">
+  <div class="card">
+    <h3>Repositório oficial</h3>
+    <p class="muted">Conecta o painel ao repositório <b>callangonerd-dev/callangonerd</b>. O painel grava os JSON de publicação direto no repositório e o GitHub Pages serve o site público.</p>
+    <div class="grid g2">
+      <div><label>Owner / organização</label><input id="gh_owner" placeholder="callangonerd-dev"></div>
+      <div><label>Repositório</label><input id="gh_repo" placeholder="callangonerd"></div>
+      <div><label>Branch</label><input id="gh_branch" placeholder="main"></div>
+      <div><label>Pasta de dados</label><input id="gh_dir" placeholder="data"></div>
+      <div><label>Pasta do acervo</label><input id="gh_backup" placeholder="backup"></div>
+      <div><label>URL pública (GitHub Pages)</label><input id="gh_pages" placeholder="https://callangonerd-dev.github.io/callangonerd/"></div>
+      <div><label>Token de acesso (fine-grained, escopo Contents: read/write)</label><input id="gh_token" type="password" placeholder="github_pat_..."></div>
+      <div><label>Mensagem de commit</label><input id="gh_msg" placeholder="chore(cms): publicar conteúdo"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button onclick="ghSaveCfg()">Salvar conexão</button>
+      <button class="ghost" onclick="ghTest()">Testar conexão</button>
+      <button class="ghost" onclick="ghOpenPages()">Abrir site publicado</button>
+    </div>
+    <p class="muted" style="margin-top:10px" id="gh_out">O token fica apenas no cache local deste navegador.</p>
+  </div>
+
+  <div class="card">
+    <h3>Publicar no repositório</h3>
+    <p class="muted">Gera e commita <code>site-config.json</code>, <code>posts.json</code>, <code>sitemap.xml</code> e <code>feed.xml</code> na pasta de dados do repositório.</p>
+    <div class="row">
+      <button onclick="ghPublishAll()">Publicar tudo no GitHub</button>
+      <button class="ghost" onclick="ghPublishOne('site-config.json')">Só site-config.json</button>
+      <button class="ghost" onclick="ghPublishOne('posts.json')">Só posts.json</button>
+      <button class="ghost" onclick="ghPublishOne('sitemap.xml')">Só sitemap.xml</button>
+      <button class="ghost" onclick="ghPublishOne('feed.xml')">Só feed.xml</button>
+    </div>
+    <p class="muted" style="margin-top:10px" id="gh_pub">—</p>
+  </div>
+
+  <div class="card">
+    <h3>Importar acervo histórico do repositório</h3>
+    <p class="muted">Lê os arquivos da pasta <code>/backup</code> (feed.atom e XML de backup do Blogger) e importa as postagens como rascunhos.</p>
+    <div class="row">
+      <button class="ghost" onclick="ghListBackup()">Listar arquivos do acervo</button>
+    </div>
+    <table style="margin-top:10px"><thead><tr><th>Arquivo</th><th>Tamanho</th><th>Ação</th></tr></thead><tbody id="gh_backupTable"><tr><td colspan="3" class="muted">Nenhuma listagem ainda.</td></tr></tbody></table>
+    <p class="muted" style="margin-top:10px" id="gh_imp">—</p>
+  </div>
+
+  <div class="card">
+    <h3>Migração para callangonerd.com</h3>
+    <p class="muted">Gera o arquivo <code>CNAME</code> e o <code>.nojekyll</code> na raiz do repositório quando o domínio personalizado estiver pronto.</p>
+    <div class="row">
+      <button class="ghost" onclick="ghPutRootFile('CNAME')">Criar/atualizar CNAME</button>
+      <button class="ghost" onclick="ghPutRootFile('.nojekyll')">Criar .nojekyll</button>
+    </div>
+    <p class="muted" style="margin-top:10px" id="gh_dom">Domínio usado: valor do campo “Domínio público” em Configurações.</p>
+  </div>
+</section>
+
 <section id="v_backend" class="hidden">
   <div class="card">
     <h3>Status do backend</h3>
@@ -1441,11 +1500,11 @@ function ensureAuthorFor(u){
 
 /* ================= NAV ================= */
 const VIEWS=["dashboard","posts","estatisticas","taxonomy","media","comments","ganhos","paginas","layout","tema",
-  "leitura","authors","users","menus","integrations","logs","settings","blogsettings","extras","backend","ajuda"];
+  "leitura","authors","users","menus","integrations","logs","settings","blogsettings","extras","backend","github","ajuda"];
 const TITLES={dashboard:"Painel",posts:"Postagens",estatisticas:"Estatísticas",ganhos:"Ganhos",
   paginas:"Páginas",layout:"Layout",tema:"Tema",leitura:"Lista de leitura",ajuda:"Ajuda",taxonomy:"Categorias & Tags",media:"Biblioteca de mídia",
   comments:"Comentários",authors:"Autores",users:"Usuários",menus:"Menus & Home",integrations:"Integrações",
-  logs:"Auditoria",settings:"Configurações",blogsettings:"Preferências do site",extras:"Recursos avançados",backend:"Backend e Regras"};
+  logs:"Auditoria",settings:"Configurações",blogsettings:"Preferências do site",extras:"Recursos avançados",backend:"Backend e Regras",github:"GitHub & Pages"};
 function go(v){ VIEWS.forEach(x=>$("v_"+x)?.classList.toggle("hidden", x!==v));
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===v));
   $("viewTitle").textContent=TITLES[v]; renderAll(); }
@@ -1455,7 +1514,7 @@ function enterApp(){
   $("gate").classList.add("hidden"); $("app").classList.remove("hidden");
   const u=me(); $("meName").textContent=u.name; $("meRole").textContent=u.permission;
   $("meAvatar").src = u.photo || "data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"><rect width="36" height="36" fill="#dfe3e8"/></svg>');
-  document.querySelectorAll('#nav button[data-view="users"],#nav button[data-view="settings"],#nav button[data-view="menus"],#nav button[data-view="integrations"],#nav button[data-view="blogsettings"],#nav button[data-view="backend"],#nav button[data-view="extras"]')
+  document.querySelectorAll('#nav button[data-view="users"],#nav button[data-view="settings"],#nav button[data-view="menus"],#nav button[data-view="integrations"],#nav button[data-view="blogsettings"],#nav button[data-view="backend"],#nav button[data-view="github"],#nav button[data-view="extras"]')
     .forEach(b=>b.classList.toggle("hidden", !isAdmin() && b.dataset.view!=="users"));
   const ph = u.photo || "data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"><rect width="36" height="36" fill="#dfe3e8"/></svg>');
   if($("topAvatar")) $("topAvatar").src = ph;
@@ -3387,6 +3446,146 @@ if(!DB.posts.length) importCallangoArchive(true);
 
   if(document.getElementById("app") && !document.getElementById("app").classList.contains("hidden")) renderAll();
 })();
+</script>
+
+
+<script>
+/* ================= v13 — GITHUB & PAGES ================= */
+const GH_FIELDS=["ghOwner","ghRepo","ghBranch","ghDir","ghBackupDir","ghPages","ghToken","ghMsg"];
+const GH_MAP={gh_owner:"ghOwner",gh_repo:"ghRepo",gh_branch:"ghBranch",gh_dir:"ghDir",gh_backup:"ghBackupDir",gh_pages:"ghPages",gh_token:"ghToken",gh_msg:"ghMsg"};
+function ghDefaults(){
+  const c=DB.cfg||{};
+  return {owner:c.ghOwner||"callangonerd-dev", repo:c.ghRepo||"callangonerd", branch:c.ghBranch||"main",
+    dir:(c.ghDir!==undefined&&c.ghDir!==null&&c.ghDir!=="")?c.ghDir:"data",
+    backup:c.ghBackupDir||"backup", token:c.ghToken||"", msg:c.ghMsg||"chore(cms): publicar conteúdo",
+    pages:c.ghPages||"https://callangonerd-dev.github.io/callangonerd/"};
+}
+function ghFill(){ const g=ghDefaults();
+  const v={gh_owner:g.owner,gh_repo:g.repo,gh_branch:g.branch,gh_dir:g.dir,gh_backup:g.backup,gh_pages:g.pages,gh_token:g.token,gh_msg:g.msg};
+  Object.keys(v).forEach(k=>{ const el=$(k); if(el && !el.value) el.value=v[k]; }); }
+function ghSaveCfg(){ Object.keys(GH_MAP).forEach(id=>{ const el=$(id); if(el) DB.cfg[GH_MAP[id]]=el.value.trim(); });
+  save(); log("github.config", ghDefaults().owner+"/"+ghDefaults().repo); toast("Conexão com o GitHub salva");
+  $("gh_out").textContent="Conexão salva: "+ghDefaults().owner+"/"+ghDefaults().repo+" ("+ghDefaults().branch+")"; }
+function ghApi(path){ const g=ghDefaults(); return "https://api.github.com/repos/"+g.owner+"/"+g.repo+path; }
+function ghHeaders(){ const g=ghDefaults(); const h={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
+  if(g.token) h["Authorization"]="Bearer "+g.token; return h; }
+function ghPath(name){ const g=ghDefaults(); return (g.dir? g.dir.replace(/^\/+|\/+$/g,"")+"/" : "")+name; }
+function ghB64(text){ const bytes=new TextEncoder().encode(text); let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
+function ghFromB64(b64){ const bin=atob(String(b64).replace(/\s/g,"")); const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i); return new TextDecoder("utf-8").decode(bytes); }
+
+async function ghTest(){ const g=ghDefaults(); const out=$("gh_out"); out.textContent="Testando "+g.owner+"/"+g.repo+"…";
+  try{ const r=await fetch(ghApi(""),{headers:ghHeaders()});
+    if(!r.ok){ out.textContent="Falha ["+r.status+"]: "+(await r.text()).slice(0,300); return; }
+    const d=await r.json();
+    out.textContent="OK — "+d.full_name+" · branch padrão: "+d.default_branch+" · "+(d.private?"privado":"público")+(g.token?" · token ativo":" · sem token (somente leitura)");
+    log("github.test", d.full_name);
+  }catch(e){ out.textContent="Erro de rede: "+e.message; } }
+function ghOpenPages(){ window.open(ghDefaults().pages,"_blank"); }
+
+/* ---- construtores de conteúdo ---- */
+function ghDomain(){ return (DB.cfg.publicDomain||"callangonerd.com").replace(/^https?:\/\//,"").replace(/\/$/,""); }
+function ghLive(){ return (DB.posts||[]).filter(p=>!p.trashed && p.status==="published"); }
+function ghPostUrl(p){ return "https://"+ghDomain()+"/"+(p.slug||slugify(p.title)); }
+function ghBuild(name){
+  if(name==="site-config.json"){
+    const s=(typeof site==="function")? site() : {sections:[],ads:{},social:{},share:{}};
+    return JSON.stringify({site:{name:DB.cfg.siteName||"",domain:ghDomain(),logo:DB.cfg.logo||"",favicon:DB.cfg.favicon||"",
+      color:DB.cfg.color||"#1a73e8",perPage:Number(DB.cfg.perPage)||12,seoDesc:DB.cfg.seoDesc||"",analytics:DB.cfg.ga||"",
+      repo:ghDefaults().owner+"/"+ghDefaults().repo, pages:ghDefaults().pages},
+      menus:DB.menus||[],sections:s.sections||[],ads:s.ads||{},social:s.social||{},share:s.share||{},
+      categories:(DB.categories||[]).map(c=>({name:c.name,slug:c.slug||slugify(c.name)})),
+      authors:(DB.authors||[]).map(a=>({name:a.displayName,slug:a.slug,photo:a.photo,bio:a.bio,social:a.social||{}})),
+      generatedAt:now()},null,2);
+  }
+  if(name==="posts.json"){
+    return JSON.stringify(ghLive().map(p=>({id:p.id,title:p.title,slug:p.slug,url:ghPostUrl(p),category:p.category,
+      tags:p.tags||[],cover:p.cover||"",excerpt:p.excerpt||"",content:p.content||"",author:p.authorName||p.author||"",
+      publishedAt:p.publishedAt||p.createdAt,featured:!!p.featured,
+      seo:{title:p.seoTitle||p.title,description:p.seoDesc||p.excerpt||"",keyword:p.seoKw||"",canonical:p.canonical||ghPostUrl(p)}})),null,2);
+  }
+  if(name==="sitemap.xml"){
+    const urls=ghLive().map(p=>"  <url><loc>"+esc(ghPostUrl(p))+"</loc><lastmod>"+String(p.updatedAt||p.publishedAt||p.createdAt||now()).slice(0,10)+"</lastmod></url>").join("\n");
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://'+ghDomain()+'/</loc></url>\n'+urls+"\n</urlset>";
+  }
+  if(name==="feed.xml"){
+    const items=ghLive().map(p=>"  <item><title>"+esc(p.title)+"</title><link>"+esc(ghPostUrl(p))+"</link><description>"+esc(p.excerpt||"")+"</description><pubDate>"+new Date(p.publishedAt||p.createdAt||now()).toUTCString()+"</pubDate></item>").join("\n");
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel>\n  <title>'+esc(DB.cfg.siteName||ghDomain())+"</title>\n  <link>https://"+ghDomain()+"/</link>\n  <description>"+esc(DB.cfg.seoDesc||"")+"</description>\n"+items+"\n</channel></rss>";
+  }
+  return "";
+}
+
+/* ---- commit ---- */
+async function ghGetSha(path){ const g=ghDefaults();
+  const r=await fetch(ghApi("/contents/"+path.split("/").map(encodeURIComponent).join("/")+"?ref="+encodeURIComponent(g.branch)),{headers:ghHeaders()});
+  if(r.status===404) return null;
+  if(!r.ok) throw new Error("["+r.status+"] "+(await r.text()).slice(0,200));
+  const d=await r.json(); return d.sha||null; }
+async function ghCommit(path,text){ const g=ghDefaults();
+  if(!g.token) throw new Error("Informe um token com permissão Contents: read/write.");
+  const sha=await ghGetSha(path);
+  const body={message:(g.msg||"chore(cms): publicar conteúdo")+" — "+path,content:ghB64(text),branch:g.branch};
+  if(sha) body.sha=sha;
+  const r=await fetch(ghApi("/contents/"+path.split("/").map(encodeURIComponent).join("/")),
+    {method:"PUT",headers:{...ghHeaders(),"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error("["+r.status+"] "+(await r.text()).slice(0,300));
+  const d=await r.json(); log("github.commit",path); return d.commit&&d.commit.sha?d.commit.sha.slice(0,7):"ok"; }
+
+async function ghPublishOne(name){ const out=$("gh_pub"); out.textContent="Enviando "+name+"…";
+  try{ const sha=await ghCommit(ghPath(name), ghBuild(name)); out.textContent=name+" publicado ("+sha+") em "+fmt(now()); toast(name+" enviado ao GitHub"); }
+  catch(e){ out.textContent="Falha em "+name+": "+e.message; toast("Falha ao publicar "+name,true); } }
+async function ghPublishAll(){ const files=["site-config.json","posts.json","sitemap.xml","feed.xml"]; const done=[]; const out=$("gh_pub");
+  for(const f of files){ out.textContent="Enviando "+f+"…";
+    try{ await ghCommit(ghPath(f), ghBuild(f)); done.push(f); }
+    catch(e){ out.textContent="Falha em "+f+": "+e.message; toast("Falha ao publicar",true); return; } }
+  out.textContent="Publicado no GitHub: "+done.join(", ")+" — "+fmt(now())+". O GitHub Pages atualiza em alguns instantes.";
+  toast("Conteúdo publicado no repositório"); }
+async function ghPutRootFile(name){ const out=$("gh_dom");
+  const text = name==="CNAME" ? ghDomain()+"\n" : "";
+  try{ const sha=await ghCommit(name,text); out.textContent=name+" atualizado ("+sha+")"+(name==="CNAME"?" com o domínio "+ghDomain():""); toast(name+" atualizado"); }
+  catch(e){ out.textContent="Falha: "+e.message; toast("Falha ao gravar "+name,true); } }
+
+/* ---- acervo /backup ---- */
+async function ghListBackup(){ const g=ghDefaults(); const tb=$("gh_backupTable"); const out=$("gh_imp");
+  tb.innerHTML='<tr><td colspan="3" class="muted">Carregando…</td></tr>';
+  try{ const r=await fetch(ghApi("/contents/"+encodeURIComponent(g.backup)+"?ref="+encodeURIComponent(g.branch)),{headers:ghHeaders()});
+    if(!r.ok){ tb.innerHTML='<tr><td colspan="3" class="muted">Não foi possível listar ['+r.status+'].</td></tr>'; return; }
+    const items=await r.json();
+    const files=(Array.isArray(items)?items:[]).filter(f=>f.type==="file" && /\.(atom|xml|json)$/i.test(f.name));
+    if(!files.length){ tb.innerHTML='<tr><td colspan="3" class="muted">Nenhum feed.atom / XML encontrado em /'+esc(g.backup)+'.</td></tr>'; return; }
+    tb.innerHTML=files.map(f=>'<tr><td>'+esc(f.name)+'</td><td class="muted">'+Math.round((f.size||0)/1024)+' KB</td>'
+      +'<td><button class="ghost sm" onclick="ghImportFile(\''+encodeURIComponent(f.path)+'\')">Importar posts</button></td></tr>').join("");
+    out.textContent=files.length+" arquivo(s) de acervo encontrados.";
+  }catch(e){ tb.innerHTML='<tr><td colspan="3" class="muted">Erro: '+esc(e.message)+'</td></tr>'; } }
+
+async function ghImportFile(encPath){ const g=ghDefaults(); const path=decodeURIComponent(encPath); const out=$("gh_imp");
+  out.textContent="Baixando "+path+"…";
+  try{ const r=await fetch(ghApi("/contents/"+path.split("/").map(encodeURIComponent).join("/")+"?ref="+encodeURIComponent(g.branch)),{headers:ghHeaders()});
+    if(!r.ok) throw new Error("["+r.status+"] não foi possível baixar");
+    const d=await r.json();
+    let text = d.content ? ghFromB64(d.content) : await (await fetch(d.download_url)).text();
+    const n = ghImportText(text, path);
+    save(); log("github.import", path+" · "+n+" posts"); renderAll();
+    out.textContent=n+" post(s) importado(s) de "+path+" como rascunho.";
+    toast(n+" post(s) importado(s)");
+  }catch(e){ out.textContent="Falha ao importar: "+e.message; toast("Falha na importação",true); } }
+
+function ghImportText(text, name){ let n=0;
+  if(/\.json$/i.test(name)){ const arr=JSON.parse(text); const items=arr.items||arr;
+    items.forEach(it=>{ DB.posts.push(mkImported(it.title||"",it.content||"",it.published,(it.labels||it.tags||[]))); n++; }); return n; }
+  const doc=new DOMParser().parseFromString(text,"application/xml");
+  [...doc.getElementsByTagName("entry")].forEach(e=>{
+    const cats=[...e.getElementsByTagName("category")].map(c=>c.getAttribute("term")).filter(t=>t&&!/^https?:/.test(t));
+    const kind=[...e.getElementsByTagName("category")].map(c=>c.getAttribute("term")||"").join(" ");
+    if(/#(template|settings|comment|page)/.test(kind)) return;
+    const t=e.getElementsByTagName("title")[0]?.textContent||"";
+    const c=e.getElementsByTagName("content")[0]?.textContent||"";
+    const pub=e.getElementsByTagName("published")[0]?.textContent;
+    if(t&&c){ DB.posts.push(mkImported(t,c,pub,cats)); n++; } });
+  return n; }
+
+const _ghGo = window.go;
+window.go = function(v){ _ghGo(v); if(v==="github") ghFill(); };
 </script>
 
 </body>
