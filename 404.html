@@ -3710,16 +3710,130 @@ window.go = function(v){ _ghGo(v); if(v==="github") ghFill(); };
     const base = location.pathname.replace(/[^/]*$/,"");
     const dirs = ["", "data/", "docs/", "public/", "content/"];
     if(dir) dirs.unshift(dir.replace(/^\/+|\/+$/g,"")+"/");
-    return dirs.map(d=>base+d);
+    const out = [];
+    dirs.forEach(d=>{ const p = base+d; if(!out.includes(p)) out.push(p); });
+    if(!out.includes("/")) out.push("/");
+    return out;
   }
   async function grab(name){
     for(const b of dataDirs()){
       try{
         const r = await fetch(b+name, {cache:"no-store"});
-        if(r.ok){ const j = await r.json(); if(j) return j; }
+        if(!r.ok) continue;
+        const t = await r.text();
+        if(/^\s*</.test(t)) continue;           // veio HTML (404 do Pages)
+        const j = JSON.parse(t);
+        if(j) return j;
       }catch{}
     }
     return null;
+  }
+
+  /* ---------- normalização: aceita qualquer formato vindo do backup ---------- */
+  function firstImg(html){
+    const m = /<img[^>]+src=["']([^"']+)["']/i.exec(String(html||""));
+    return m ? m[1] : "";
+  }
+  function normalize(p){
+    if(!p || typeof p !== "object") return null;
+    const title = p.title || p.titulo || p.name || "";
+    if(!title) return null;
+    const content = p.content || p.html || p.body || p.contentHtml || p.description || "";
+    const status = String(p.status||"published").toLowerCase();
+    if(p.trashed || (status && status!=="published" && status!=="publicado" && status!=="live")) return null;
+    const tags = Array.isArray(p.tags) ? p.tags
+      : Array.isArray(p.labels) ? p.labels
+      : String(p.tags||p.labels||"").split(",").map(s=>s.trim()).filter(Boolean);
+    return {
+      id: p.id || p.slug || sl(title),
+      title,
+      slug: p.slug || p.permalink || sl(title),
+      category: p.category || p.categoria || tags[0] || "",
+      tags,
+      cover: p.cover || p.image || p.thumbnail || p.thumb || firstImg(content),
+      excerpt: p.excerpt || p.summary || p.resumo || strip(content).slice(0,180),
+      content,
+      author: p.author || p.authorName || p.autor || "",
+      publishedAt: p.publishedAt || p.published || p.date || p.updated || p.createdAt || "",
+      featured: p.featured==="yes" || p.featured===true
+    };
+  }
+  function unwrap(data){
+    if(!data) return [];
+    if(Array.isArray(data)) return data;
+    if(Array.isArray(data.posts)) return data.posts;
+    if(Array.isArray(data.items)) return data.items;
+    if(Array.isArray(data.entries)) return data.entries;
+    if(data.data && Array.isArray(data.data)) return data.data;
+    return [];
+  }
+
+  /* ---------- fallback: Firestore (REST, leitura pública) ---------- */
+  function fbCfg(cfg){
+    const c = (cfg && (cfg.firebase || cfg.firestore)) || window.CN_FIREBASE || null;
+    if(c && c.projectId && c.apiKey) return c;
+    try{
+      const l = (JSON.parse(localStorage.getItem("callango_cms_v2")||"{}").cfg)||{};
+      if(l.projectId && l.apiKey) return l;
+    }catch{}
+    return null;
+  }
+  function fsVal(v){
+    if(!v || typeof v!=="object") return v;
+    if("stringValue" in v) return v.stringValue;
+    if("integerValue" in v) return Number(v.integerValue);
+    if("doubleValue" in v) return Number(v.doubleValue);
+    if("booleanValue" in v) return v.booleanValue;
+    if("timestampValue" in v) return v.timestampValue;
+    if("nullValue" in v) return "";
+    if("arrayValue" in v) return (v.arrayValue.values||[]).map(fsVal);
+    if("mapValue" in v) return fsObj(v.mapValue.fields||{});
+    return "";
+  }
+  function fsObj(fields){
+    const o = {}; Object.keys(fields||{}).forEach(k=>o[k]=fsVal(fields[k])); return o;
+  }
+  async function fromFirestore(cfg){
+    const c = fbCfg(cfg);
+    if(!c) return {cfg:null, posts:[]};
+    const db = encodeURIComponent(c.firestoreDb||"(default)");
+    const base = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(c.projectId)}/databases/${db}/documents`;
+    const key = `key=${encodeURIComponent(c.apiKey)}`;
+    let posts = [], conf = null;
+
+    // 1) coleção "posts" publicada
+    try{
+      const r = await fetch(`${base}/posts?pageSize=300&${key}`, {cache:"no-store"});
+      if(r.ok){
+        const j = await r.json();
+        posts = (j.documents||[]).map(d=>fsObj(d.fields));
+      }
+    }catch{}
+
+    // 2) documento de estado do painel (cms/state)
+    try{
+      const col = encodeURIComponent(c.firestoreCollection||"cms");
+      const doc = encodeURIComponent(c.firestoreDoc||"state");
+      const r = await fetch(`${base}/${col}/${doc}?${key}`, {cache:"no-store"});
+      if(r.ok){
+        const j = await r.json();
+        const o = fsObj(j.fields||{});
+        let state = o;
+        if(typeof o.json === "string"){ try{ state = JSON.parse(o.json); }catch{} }
+        else if(typeof o.data === "string"){ try{ state = JSON.parse(o.data); }catch{} }
+        if(state && Array.isArray(state.posts) && !posts.length) posts = state.posts;
+        if(state && (state.cfg || state.categories || state.menus)){
+          const k = state.cfg || {};
+          conf = {
+            site:{name:k.siteName||"Callango Nerd",logo:k.logo||"",seoDesc:k.seoDesc||"",perPage:Number(k.perPage)||12},
+            menus: state.menus||[],
+            categories:(state.categories||[]).map(x=>({name:x.name,slug:x.slug||sl(x.name)}))
+          };
+        }
+      }
+    }catch{}
+
+    return {cfg:conf, posts};
   }
 
   /* ---------- fallback: cache local do painel ---------- */
@@ -3740,15 +3854,40 @@ window.go = function(v){ _ghGo(v); if(v==="github") ghFill(); };
     return {cfg,posts};
   }
 
+  function finish(cfg, rawPosts){
+    CFG = cfg || CFG;
+    const seen = new Set();
+    POSTS = unwrap(rawPosts).map(normalize).filter(Boolean).filter(p=>{
+      const k = p.slug || p.id; if(seen.has(k)) return false; seen.add(k); return true;
+    }).sort((a,b)=>{
+      const ta = Date.parse(a.publishedAt)||0, tb = Date.parse(b.publishedAt)||0;
+      return tb - ta || String(b.publishedAt).localeCompare(String(a.publishedAt));
+    });
+    render();
+  }
+
   async function boot(){
     root.innerHTML = shell(`<div class="ps-empty">Carregando o acervo do Callango Nerd…</div>`);
-    const [cfg, posts] = await Promise.all([grab("site-config.json"), grab("posts.json")]);
-    const cache = fromCache();
-    CFG = cfg || cache.cfg || CFG;
-    POSTS = (Array.isArray(posts) ? posts : (posts && posts.posts) || null) || cache.posts || [];
-    POSTS = POSTS.filter(p=>p && p.title).map(p=>({...p, slug:p.slug||sl(p.title), publishedAt:p.publishedAt||p.date||""}))
-      .sort((a,b)=>String(b.publishedAt).localeCompare(String(a.publishedAt)));
-    render();
+    let cfg = null, posts = null;
+    try{
+      const res = await Promise.all([grab("site-config.json"), grab("posts.json")]);
+      cfg = res[0]; posts = res[1];
+    }catch{}
+
+    let list = unwrap(posts);
+
+    // sem posts.json publicado? tenta Firestore e depois o cache do painel
+    if(!list.length){
+      const fs = await fromFirestore(cfg);
+      if(fs.posts.length){ list = fs.posts; }
+      cfg = cfg || fs.cfg;
+    }
+    if(!list.length){
+      const cache = fromCache();
+      list = cache.posts;
+      cfg = cfg || cache.cfg;
+    }
+    finish(cfg, list);
   }
 
   /* ---------- roteador por hash ---------- */
