@@ -1,6 +1,0 @@
-callangonerd/
-  index.html   -> vitrine publica (raiz)
-  404.html     -> fallback GitHub Pages para /slug
-  admin/index.html -> painel CMS
-  posts.json, site-config.json -> gerados pelo painel
-  backup/feed.atom, backup/blog-backup.xml -> acervo bruto
