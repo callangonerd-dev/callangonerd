@@ -1,0 +1,12 @@
+Callango Nerd — pacote v3 (separação definitiva)
+
+index.html      -> VITRINE PÚBLICA (template visual: carrossel, categorias, grid do acervo,
+                   página de post por slug, busca). Nenhum login ou botão de admin.
+404.html        -> cópia da vitrine, para URLs limpas (/meu-post) no GitHub Pages.
+admin/index.html-> PAINEL CMS isolado (posts, importação feed.atom/XML, configurações).
+                   Marcado com noindex.
+
+Dados: a vitrine lê posts.json e site-config.json na raiz (ou data/, docs/, public/),
+com fallback para Firestore e cache local do painel.
+
+Publicação no GitHub Pages: envie index.html, 404.html e a pasta admin/ para a raiz do repo.
